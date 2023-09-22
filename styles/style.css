@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+}
+  /*****************/
+ /*    HEADER    */
+/***************/
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0dc6ff;
+
+    /* Because we want header to be sticky later */
+    height: 3rem;
+    padding: 0 4.8rem;
+    position: relative;
+}
+  /*****************/
+ /*NAVIGATION BAR*/
+/***************/
+.main-nav{
+    margin-left: 4.15rem;
+}
+.main-nav-list{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 4.8rem;
+}
+.main-nav-link:link,
+.main-nav-link:visited {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    padding-top: 1.4rem;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.main-nav-link:hover,
+.main-nav-link:active {
+    color: #ffff00;
+}
+#dark-light-effect{
+    padding-top: 0.8rem;
+    background-color: #0dc6ff;
+    border: none;
+}
+/* STICKY NAVIGATION */
+header {
+    position: fixed;
+}
+  /*****************/
+ /* HOME SECTION */
+/***************/
+.section-home{
+    background-color: #ffff00;
+}
+.home-content-box{
+    display: flex;
+}
+.home-text-content-box{
+    flex: 50%;
+    padding-left: 10%;
+}
+.home-image-box{
+    flex: 50%;
+    padding: 50px;
+}
+  /*****************/
+ /*ABOUT SECTION */
+/***************/
+.section-about{
+    text-align: center;
+    background-color: #333333;
+    color: #ffffff;
+}
