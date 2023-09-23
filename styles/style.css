@@ -3,9 +3,9 @@
     padding: 0;
     box-shadow: none;
 }
-  /*****************/
- /*    HEADER    */
-/***************/
+  /**********************/
+ /*       HEADER       */
+/**********************/
 header {
     display: flex;
     justify-content: space-between;
@@ -17,9 +17,9 @@ header {
     padding: 0 4.8rem;
     position: relative;
 }
-  /*****************/
- /*NAVIGATION BAR*/
-/***************/
+  /**********************/
+ /*   NAVIGATION BAR   */
+/**********************/
 .main-nav{
     margin-left: 4.15rem;
 }
@@ -53,9 +53,9 @@ header {
 header {
     position: fixed;
 }
-  /*****************/
- /* HOME SECTION */
-/***************/
+  /**********************/
+ /*    HOME SECTION    */
+/**********************/
 .section-home{
     background-color: #ffff00;
 }
@@ -70,11 +70,39 @@ header {
     flex: 50%;
     padding: 50px;
 }
-  /*****************/
- /*ABOUT SECTION */
-/***************/
+  /**********************/
+ /*    ABOUT SECTION   */
+/**********************/
 .section-about{
     text-align: center;
     background-color: #333333;
     color: #ffffff;
+}
+.testimonials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 4.8rem;
+    column-gap: 8rem;
+}  
+.testimonial-img {
+    width: 2.2rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+  
+.testimonial-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.1rem;
+}
+  
+.testimonial-name {
+    font-size: 1rem;
+    color: #ffffff;
+}
+  /**********************/
+ /* ADVANTAGES SECTION */
+/**********************/
+.section-advantages{
+    background-color: #444444;
 }
