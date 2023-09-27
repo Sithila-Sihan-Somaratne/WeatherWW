@@ -1,3 +1,6 @@
+/*
+    index.html
+*/
   /**********************/
  /*       HEADER       */
 /**********************/
@@ -191,4 +194,32 @@ footer{
     font-weight: 600;
     padding: 2rem;
     text-align: center;
+}
+/*
+    details.html
+*/
+  /***************************/
+ /*    FEATURES SECTION     */
+/***************************/
+.features-and-usage-section{
+    background-color: #444444;
+}
+ul{
+    margin-left: 25rem;
+}
+#back{
+    float: right;
+}
+.back-to-home{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #000;
+}
+/*
+    sign_up.html
+*/
+.log_in_link{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #ffff00;
 }
