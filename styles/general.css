@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    color: #ffffff;
+}
+h2{
+    text-align: center;
+}
+input,select,option{
+    text-align: center;
+    border: none;
+}
+select,option{
+    color: #333333;
+    text-align: center;
+}
+input,select{
+    width: 80%;
+    border-radius: 20px;
+}

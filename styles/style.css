@@ -1,8 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
-}
   /**********************/
  /*       HEADER       */
 /**********************/
@@ -21,6 +16,7 @@ header {
  /*   NAVIGATION BAR   */
 /**********************/
 .main-nav{
+    width: 100%;
     margin-left: 4.15rem;
 }
 .main-nav-list{
@@ -31,9 +27,9 @@ header {
 }
 .main-nav-link:link,
 .main-nav-link:visited {
+    color: #ffffff;
     display: inline-block;
     text-decoration: none;
-    color: #ffffff;
     padding-top: 1.4rem;
     font-weight: 500;
     font-size: 1rem;
@@ -57,12 +53,13 @@ header {
  /*    HOME SECTION    */
 /**********************/
 .section-home{
-    background-color: #ffff00;
+    background-color: #ffea00;
 }
 .home-content-box{
     display: flex;
 }
 .home-text-content-box{
+    color: #333333;
     flex: 50%;
     padding-left: 10%;
 }
@@ -76,7 +73,6 @@ header {
 .section-about{
     text-align: center;
     background-color: #333333;
-    color: #ffffff;
 }
 .testimonials {
     display: grid;
@@ -98,11 +94,101 @@ header {
   
 .testimonial-name {
     font-size: 1rem;
-    color: #ffffff;
 }
   /**********************/
  /* ADVANTAGES SECTION */
 /**********************/
 .section-advantages{
     background-color: #444444;
+}
+.advantages-box{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding-left: 7.4rem;
+}
+.advantages-text-box{
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    display: grid;
+    background-color: #0000ff;
+    stroke-width: 1px;
+    stroke: #000;
+    border-radius: 20px;
+    width: 270px;
+    height: 255px;
+}
+.advantages-text-box-content{
+    text-align: center;
+}
+.see-link{
+    color: #68E503;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+  /**********************/
+ /*    TRY SECTION     */
+/**********************/
+.section-try{
+    background-color: #333333;
+}
+.try-box {
+    padding-left: 7.4rem;
+}  
+.try-box-text{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.try-box-text-content{
+    text-align: center;
+}
+input[type="text"]{
+    margin-bottom: 2rem;
+}
+.output-box-text{
+    display: grid;
+    height: 440px;
+    grid-template-columns: repeat(2,1fr);
+    width: calc(100% - 20px)
+}
+.output-box-text-details{
+    text-align: center;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 5px 10rem;
+    margin-bottom: 0;
+}
+iframe{
+    margin-left: 2rem;
+}
+  /*************************************/
+ /*    SEND US A FEEDBACK SECTION     */
+/*************************************/
+.send-section{
+    background-color: #333333;
+}
+.send-box{
+    text-align: center;
+    margin: 2rem;
+    border-radius: 20px;
+    height: 20rem;
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+    background-color: #D5D51A;
+}
+#submit{
+    float: right;
+}
+  /*************************************/
+ /*              FOOTER               */
+/*************************************/
+footer{
+    background-color: #737373;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 2rem;
+    text-align: center;
 }

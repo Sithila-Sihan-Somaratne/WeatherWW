@@ -6,6 +6,7 @@
     <title>Weather App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/general.css">
  </head>
  <body>
     <header>
@@ -30,7 +31,7 @@
           <br><br><br>
           <h1>WeatherWW</h1>
           <br><br><br>
-          <p>
+          <p style="color: #333333;">
             Try out our Weather Wing Website <br>
             to see all current weather details <br>
             (including the historical ones) .
@@ -49,8 +50,8 @@
       <br><br><br><br><br><br>
       </section>
       <section id="about" class="section-about">
-        <br><br>
-        <h2>About WeatherWW</h2><br>
+        <br><br><br>
+        <h2>About WeatherWW</h2><br><br>
         <p>
           <br>
           WeatherWW stands for Weather Wing Website <br>
@@ -116,10 +117,146 @@
       </section>
       <section id="advantages" class="section-advantages">
           <br><br>
-          <h2>Our advantages</h2><br>
+          <h2>WeatherWW advantages</h2><br>
+          <div class="advantages-box">
+            <div class="advantages-text-box">
+              <p class="advantages-text-box-content">
+                <br><br>
+                WeatherWW is free <br>
+                and has got a <br>
+                lot of features. <br>
+                <br><br><br>
+                <a class="see-link"  href="">See Link</a>
+              </p>
+            </div>
+            <div class="advantages-text-box">
+              <p class="advantages-text-box-content">
+                <br><br>
+                WeatherWW will <br>
+                always be updated <br>
+                with real time data. <br>
+                <br><br><br>
+                <img src="assets/clock.gif" alt="Clock Moving Automatically">
+              </p>
+            </div>
+            <div class="advantages-text-box">
+              <p class="advantages-text-box-content">
+                <br><br>
+                WeatherWW is secure <br>
+                and protects your <br>
+                account's details. <br>
+                <br><br><br>
+                <img src="assets/key.png" alt="Key">
+              </p>
+            </div>
+            <br>
+          </div>
       </section>
+      <section id="try" class="section-try">
+        <br><br>
+        <h2>Try WeatherWW</h2><br><br>
+        <p style="text-align: center;"><a class="see-link"  href="#">Click here</a> to learn more, if you don't know what to input below.</p><br>
+        <div class="try-box">
+          <div class="try-box-text">
+            <div class="try-box-text-content">
+              <br>
+              <input style="color: #333333;  width: 80%;" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
+            </div>
+            <div class="try-box-text">
+              <div class="try-box-text-content">
+                <label for="select-option">Please choose an option: </label><br>
+                <select style="color: #333333;" id="select-option" name="select-option">
+                  <option value="">Please choose one option:</option>
+                  <option value="current">Current</option>
+                  <option value="forecast">Forecast</option>
+                  <option value="historical">Historical</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-left: 12rem;" class="try-box-text">
+              <div class="try-box-text-content">
+                <label for="input-forecast">Enter a number of days between 1 and 10 (only if you chose Forecast before)</label><br><br>
+                <input style="color: #333333;" id="input-forecast" name="input-forecast" type="text">
+              </div>
+            </div>
+            <div class="try-box-text">
+              <div class="try-box-text-content">
+                <br><br><br>
+                <button id="search" class="btn btn-danger">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <div class="output-box">
+        <div class="output-box-text">
+          <iframe id="cityFrame" title="City Frame" width="250" height="400" src=""></iframe>
+        <div style="background-color: #444444; height: fit-content;" class="output-box-text">
+          <div class="output-box-text-details">
+            <div class="output-box-text-details-content">
+              <h5>Temperature</h5>  
+              <p id="celsius"><br></p> <!--°C-->
+              <p id="fahrenheit"> <br></p>  <!--°F-->
+            </div>
+            <div class="output-box-text-details-content">
+              <h5>Humidity</h5>  
+              <p id="humidity"><br></p> 
+            </div>
+            <div class="output-box-text-details-content">
+              <h5>UV</h5>  
+              <p id="uv"><br></p> 
+            </div>
+            <div class="output-box-text-details-content">
+              <img src="assets/wind.png" alt="wind-icon">
+              <p id="mph"><br></p> 
+              <p id="kph"><br></p>  
+            </div>
+            <div class="output-box-text-details-content">
+              <img src="assets/cloud.png" alt="cloud-icon">
+              <p id="cloud"><br></p> 
+            </div>
+            <div class="output-box-text-details-content">
+              <img src="assets/rain.png" alt="prec-icon">
+              <p id="mm"><br></p> 
+              <p id="in"><br></p> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+    </section>
+    <section id="send" class="send-section">
+      <div style="color: #333333; " class="send-box">
+        <br>
+        <h2 style="font-weight: 700;">Send us a feedback!</h2>
+        <br><br>
+        <label style="color: #333333;" for="select-where">Where did you here from WeatherWW?</label>
+        <select id="select-where">
+          <option value="">Please choose one option:</option>
+          <option value="Friend&family">Friend and Family</option>
+          <option value="video">Youtube Video</option>
+          <option value="ads">Facebook/Instagram/Twitter ad</option>
+          <option value="other">Other</option>
+        </select>
+        <br><br>
+        <label style="color: #333333;" for="YesOrNo">Did you like it?</label><br>
+        <select id="YesOrNo">
+          <option value="">Please choose one option:</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="do_not_know">I don't know</option>
+        </select>
+        <br><br>
+        <button id="submit" class="btn btn-success">Submit</button>
+      </div>
+      <br><br>
+    </section>
+    <footer>
+      <p class="footer-text"><span style="color: #d7d714;">Copyright &copy;</span> 2023. Made and designed by Sithila Sihan Somaratne.</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
-    </body>
- </html>
+  </body> 
+</html>
