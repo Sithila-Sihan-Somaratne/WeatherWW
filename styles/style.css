@@ -26,6 +26,7 @@ header {
     display: flex;
     align-items: center;
     gap: 4.8rem;
+    margin-left: 25rem;
 }
 .main-nav-link:link,
 .main-nav-link:visited {
@@ -203,7 +204,7 @@ footer{
 .features-and-usage-section{
     background-color: #444444;
 }
-ul{
+.details-list{
     margin-left: 25rem;
 }
 #back{

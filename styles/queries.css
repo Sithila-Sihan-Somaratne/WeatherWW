@@ -1,8 +1,37 @@
-@media (max-width : 1290px){
-    #home_link{
-        margin-left: 4rem;
+@media (max-width: 1272px){
+    .main-nav-list{
+        margin-left: 15rem;
     }
-    .dark-light-effect-btn{
-        margin-right: 4rem;
+    body{
+        width: 100%;
+    }
+}
+@media (max-width: 1125px){
+    .main-nav-list{
+        margin-left: 10rem;
+    }
+    body{
+        width: 100%;
+    }
+}
+@media (max-width: 1093px){
+    #btn-try{
+        margin-bottom: 1rem;
+    }
+    .advantages-box{
+        justify-content: center; 
+        align-items: center;
+        display: grid;
+        margin-left: 300px;
+        margin-left: 300px;
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+@media (max-width: 1080px){
+    .main-nav-list{
+        margin-left: 5rem;
+    }
+    body{
+        width: 100%;
     }
 }
