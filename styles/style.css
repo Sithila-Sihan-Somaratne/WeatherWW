@@ -6,7 +6,6 @@
 /**********************/
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #0dc6ff;
 

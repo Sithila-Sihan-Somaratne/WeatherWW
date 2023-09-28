@@ -1,0 +1,8 @@
+@media (max-width : 1290px){
+    #home_link{
+        margin-left: 4rem;
+    }
+    .dark-light-effect-btn{
+        margin-right: 4rem;
+    }
+}
