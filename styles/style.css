@@ -106,11 +106,9 @@ header {
 }
 .advantages-box{
     justify-content: center;
-    
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    padding-left: 7.4rem;
-    padding-right: 7.4rem;
+    padding-left: 7.7rem;
 }
 .advantages-text-box{
     margin-top: 4rem;
@@ -150,10 +148,14 @@ header {
 input[type="text"]{
     margin-bottom: 2rem;
 }
-.output-box-text{
+#div_try_box{
+    margin-left: 12rem;
+}
+.output-box{
     display: grid;
-    height: 440px;
     grid-template-columns: repeat(2,1fr);
+}
+.output-box-text{
     width: calc(100% - 20px)
 }
 .output-box-text-details{

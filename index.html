@@ -24,6 +24,10 @@
           <button id="dark-light-effect"><img src="assets/light-theme-image-btn.png" alt="Dark and Ligth Button Effect"></button>
         </ul>
       </nav>
+      <button class="btn-mobile-nav">
+        <ion-icon class="icon-mobile-nav" name="menu-outline"></ion-icon>
+        <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+      </button>
     </header>
     <section id="home" class="section-home">
       <br><br><br><br><br><br>
@@ -161,11 +165,11 @@
           <div class="try-box-text">
             <div class="try-box-text-content">
               <br>
-              <input style="color: #333333;  width: 80%;" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
+              <input style="color: #333333;" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
             </div>
             <div class="try-box-text">
               <div class="try-box-text-content">
-                <label for="select-option">Please choose an option: </label><br>
+                <label for="select-option">Please choose an option: </label><br><br>
                 <select style="color: #333333;" id="select-option" name="select-option">
                   <option value="">Please choose one option:</option>
                   <option value="current">Current</option>
@@ -174,9 +178,9 @@
                 </select>
               </div>
             </div>
-            <div style="margin-left: 12rem;" class="try-box-text">
+            <div id="div_try_box" class="try-box-text">
               <div class="try-box-text-content">
-                <label for="input-forecast">Enter a number of days between 1 and 10 (only if you chose Forecast before)</label><br><br>
+                <label id="forecast-label" for="input-forecast">Enter a number of days between 1 and 10 (only if you chose Forecast before)</label><br><br>
                 <input style="color: #333333;" id="input-forecast" name="input-forecast" type="text">
               </div>
             </div>
@@ -190,8 +194,9 @@
       </div>
       <br><br>
       <div class="output-box">
-        <div class="output-box-text">
+        <div id="show-map" class="output-box-text">
           <iframe id="cityFrame" title="City Frame" width="250" height="400" src=""></iframe>
+        </div>
         <div style="background-color: #444444; height: fit-content;" class="output-box-text">
           <div class="output-box-text-details">
             <div class="output-box-text-details-content">
