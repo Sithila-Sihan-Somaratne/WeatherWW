@@ -19,11 +19,7 @@
         margin-bottom: 1rem;
     }
     .advantages-box{
-        justify-content: center; 
-        align-items: center;
         display: grid;
-        margin-left: 300px;
-        margin-left: 300px;
         grid-template-columns: repeat(1,1fr);
     }
 }

@@ -105,9 +105,12 @@ header {
     background-color: #444444;
 }
 .advantages-box{
+    justify-content: center;
+    
     display: grid;
     grid-template-columns: repeat(3,1fr);
     padding-left: 7.4rem;
+    padding-right: 7.4rem;
 }
 .advantages-text-box{
     margin-top: 4rem;
