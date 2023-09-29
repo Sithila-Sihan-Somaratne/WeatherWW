@@ -64,35 +64,12 @@
         margin-top: 1rem;
     }
 }
-@media (max-width: 922px) {
-    .home-content-box{
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        grid-template-columns: repeat(1,1fr);
-    }
-    #btn-try{
-        margin-bottom: 0rem;
-    }
-    .section-home{
-        text-align: center;
-    }
-}
-@media (max-width: 756px){
-    .output-box-text-details{
-        text-align: center;
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-        grid-gap: 5px 10rem;
-        margin-bottom: 0;
-    }
-}
-@media (min-width: 750px){
+@media (min-width: 955px){
     .btn-mobile-nav{
         display: none;
     }
 }
-@media (max-width: 750px){
+@media (max-width: 955px){
     /* MOBILE NAVIGATION */
     .btn-mobile-nav {
         display: block;
@@ -128,20 +105,56 @@
         /* 3) Hide it from screen readers */
         visibility: hidden;
     }
-    .nav-open .main-nav {
+    .mobile-menu.nav-open {
         opacity: 1;
         pointer-events: auto;
         visibility: visible;
         transform: translateX(0);
-      }
+    }
     
     .btn-mobile-nav{
        float: right;
-       margin-left: 34rem;
+       margin-left: 47rem;
        width: 10px;
        height: 10px;
        margin-bottom: 2rem;
        background: none;
        border: none;
+    }
+}
+@media (max-width: 934px){
+    .btn-mobile-nav{
+        float: right;
+        margin-left: 45rem
+    }
+}
+@media (max-width: 922px) {
+    .home-content-box{
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        grid-template-columns: repeat(1,1fr);
+    }
+    #btn-try{
+        margin-bottom: 0rem;
+    }
+    .section-home{
+        text-align: center;
+    }
+}
+@media (max-width : 900px) {
+    .btn-mobile-nav{
+        float: right;
+        margin-left: 42rem;
+        margin-right: 3rem;  
+    }
+}
+@media (max-width: 756px){
+    .output-box-text-details{
+        text-align: center;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        grid-gap: 5px 10rem;
+        margin-bottom: 0;
     }
 }

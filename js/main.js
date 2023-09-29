@@ -9,10 +9,14 @@ btnSearch.addEventListener("click", () =>{
     }else if(option === ""){
         return alert("Invalid option \""+wrongOption+"\"")
     }else if(forecast < 1 || forecast > 10){
-        if(forecast < 1){
-            return alert("The number of days of forecast cannot be less than 1")
-        }else if(forecast > 10){
-            return alert("The number of days of forecast cannot be grater than 10")
+        if (option != "forecast") {
+            return alert("You didn't chose \"Forecast\" before. PLease switch to \"Forecast\" or clear the last input.")
+        }else{
+            if(forecast < 1){
+                return alert("The number of days of forecast cannot be less than 1")
+            }else if(forecast > 10){
+                return alert("The number of days of forecast cannot be grater than 10")
+            }
         }
     }else{
         //The below will be later be changed, after WeatherWW API integration
@@ -64,15 +68,13 @@ btnSubmit.addEventListener("click", () =>{
         alert("Thank you for giving us a feedback!")
     }
 });
-let btnMobile = document.getElementById('btn-mobile-nav');
-const headerEl = document.querySelector(".header");
-btnMobile.addEventListener("click", () =>{
+let btnMobile = document.querySelector('.btn-mobile-nav').addEventListener("click", () =>{
     let image = document.getElementById('mobile-nav');
     if(image.src === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII="){
         image.src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBCGYU/RSq9Yj1uwPc1bRBcirWicv4T5Vm6UeVCTGdJ1mUwm00yAJ9AHqKOfaim9eWDO6IlhRkw1TBlKHnADXssDPsBDpdL9Gu6rGt7FNXhikEJ4YpBGeGDQQlhi0EZYYMwQmhhzhAbGDSGJcUdIYMIgrmDCIUowYRFnMOERRzDVIPYw1SH+zBDj5tp9ULvyZup6E+tsPiezEUA0TXxa/PixI4zNp7K3OlWD4cASGx7DiX0iLIaCzS4chgs7dhgMAm2HOwbB3skNg0IDaI5BsYs1w2DQiqONsZwn0MJ4DEVIYzwnO6QwEcZTJDDNHL01cxiayWQyXcR8AfkY5euVO0c7AAAAAElFTkSuQmCC"
+        document.querySelector('.main-nav-list').className += " nav-open";
     }else{
         image.src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII="
     }
-    headerEl.classList.toggle("nav-open");
-    console.log(headerEl.classList.toggle("nav-open"));
+    console.log(document);
 });
