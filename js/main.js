@@ -41,7 +41,7 @@ btnSearch.addEventListener("click", () =>{
         document.getElementById('cloud').innerHTML = "50";
         document.getElementById('mm').innerHTML = "0.0mm";    
         document.getElementById('in').innerHTML = "0.0in";    
-        document.getElementById('cityFrame').src = "https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik";
+        document.getElementById('cityFrame').src = "https://www.google.com/maps/place/Panadura,+Sri+Lanka/";
        }else if(option === "historical"){
         document.getElementById('celsius').innerHTML = "30.0 °C";
         document.getElementById('fahrenheit').innerHTML = "86.0 °C";
@@ -52,7 +52,7 @@ btnSearch.addEventListener("click", () =>{
         document.getElementById('cloud').innerHTML = "50";
         document.getElementById('mm').innerHTML = "0.0mm";    
         document.getElementById('in').innerHTML = "0.0in";    
-        document.getElementById('cityFrame').src = "https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik";
+        document.getElementById('cityFrame').src = "https://www.google.com/maps/place/Panadura,+Sri+Lanka/@6.7234035,79.9232524,14z/data=!4m6!3m5!1s0x3ae24616c169e7c3:0xd21e80c970651d56!8m2!3d6.7106361!4d79.9074262!16s%2Fm%2F02vrtzb?hl=it&entry=ttu";
        }
     }
 });
@@ -119,8 +119,6 @@ const sectionHomeEl = document.querySelector(".section-home");
 const obs = new IntersectionObserver(
   function (entries) {
     const ent = entries[0];
-    console.log(ent);
-
     if (ent.isIntersecting === false) {
       document.body.classList.add("sticky");
     }

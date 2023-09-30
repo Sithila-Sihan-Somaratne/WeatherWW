@@ -115,11 +115,11 @@ header {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     justify-items: center;
+    align-items: center; 
 }
 .advantages-text-box{
     margin-top: 4rem;
     margin-bottom: 4rem;
-    display: grid;
     background-color: #0000ff;
     stroke-width: 1px;
     stroke: #000;

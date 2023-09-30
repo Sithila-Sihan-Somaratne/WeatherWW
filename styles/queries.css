@@ -29,10 +29,15 @@
         margin-left: 0rem;
         margin-top: 1rem;
     }
+    .try-box {
+        padding-left: 0rem;
+    }  
 }
-@media (max-width: 956px){
-    .advatages-box{
+@media (max-width: 1110px){
+    .advantages-box{
         display: grid;
+        justify-items: center;
+        align-items: center; 
         grid-template-columns: repeat(1,1fr);
     }
 }
@@ -162,4 +167,14 @@
         margin-right: auto;
         width: 20rem;
     }
+}
+@media (max-width : 620px){
+    .home-image-box{
+        width: 50%;
+    }
+}
+@media (max-width: 597px){
+    #btn-see-more{
+        margin-bottom: 1rem;
+    } 
 }
