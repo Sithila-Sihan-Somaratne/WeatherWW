@@ -4,8 +4,9 @@
   /**********************/
  /*       HEADER       */
 /**********************/
-header {
+.header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     background-color: #0dc6ff;
 
@@ -17,16 +18,11 @@ header {
   /**********************/
  /*   NAVIGATION BAR   */
 /**********************/
-.main-nav{
-    width: 100%;
-    margin-left: 4.15rem;
-}
 .main-nav-list{
     list-style: none;
     display: flex;
     align-items: center;
     gap: 4.8rem;
-    margin-left: 25rem;
 }
 .main-nav-link:link,
 .main-nav-link:visited {
@@ -70,6 +66,17 @@ header {
     flex: 50%;
     padding: 50px;
 }
+
+/* STICKY NAVIGATION */
+.sticky .header {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    z-index: 999;
+}
   /**********************/
  /*    ABOUT SECTION   */
 /**********************/
@@ -79,7 +86,7 @@ header {
 }
 .testimonials {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2,1fr);
     row-gap: 4.8rem;
     column-gap: 8rem;
 }  
@@ -105,10 +112,9 @@ header {
     background-color: #444444;
 }
 .advantages-box{
-    justify-content: center;
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    padding-left: 7.7rem;
+    justify-items: center;
 }
 .advantages-text-box{
     margin-top: 4rem;

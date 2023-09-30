@@ -1,3 +1,5 @@
+const headerEl = document.querySelector(".header");
+//Searching City's Weather Details
 let wrongOption = "Please select an option:";
 let btnSearch = document.getElementById('search');
 btnSearch.addEventListener("click", () =>{
@@ -8,16 +10,14 @@ btnSearch.addEventListener("click", () =>{
         return alert("Textfields cannot be empty! Please enter a city");
     }else if(option === ""){
         return alert("Invalid option \""+wrongOption+"\"")
-    }else if(forecast < 1 || forecast > 10){
-        if (option != "forecast") {
-            return alert("You didn't chose \"Forecast\" before. PLease switch to \"Forecast\" or clear the last input.")
-        }else{
+    }else if (option != "forecast" && forecast != "" || option === "forecast" && forecast === "") {
+            return alert("You didn't chose \"Forecast\" before or input is empty. Please switch to \"Forecast\" or clear the last input or input number of days for forecast.")
+    }else if(option === "forecast" && forecast != ""){
             if(forecast < 1){
                 return alert("The number of days of forecast cannot be less than 1")
             }else if(forecast > 10){
                 return alert("The number of days of forecast cannot be grater than 10")
             }
-        }
     }else{
         //The below will be later be changed, after WeatherWW API integration
        if(option === "current"){
@@ -68,13 +68,72 @@ btnSubmit.addEventListener("click", () =>{
         alert("Thank you for giving us a feedback!")
     }
 });
-let btnMobile = document.querySelector('.btn-mobile-nav').addEventListener("click", () =>{
+///////////////////////////////////////////////////////////
+// Make mobile navigation work
+
+const btnMobile = document.querySelector('.btn-mobile-nav').addEventListener("click", () =>{
     let image = document.getElementById('mobile-nav');
     if(image.src === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII="){
         image.src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBCGYU/RSq9Yj1uwPc1bRBcirWicv4T5Vm6UeVCTGdJ1mUwm00yAJ9AHqKOfaim9eWDO6IlhRkw1TBlKHnADXssDPsBDpdL9Gu6rGt7FNXhikEJ4YpBGeGDQQlhi0EZYYMwQmhhzhAbGDSGJcUdIYMIgrmDCIUowYRFnMOERRzDVIPYw1SH+zBDj5tp9ULvyZup6E+tsPiezEUA0TXxa/PixI4zNp7K3OlWD4cASGx7DiX0iLIaCzS4chgs7dhgMAm2HOwbB3skNg0IDaI5BsYs1w2DQiqONsZwn0MJ4DEVIYzwnO6QwEcZTJDDNHL01cxiayWQyXcR8AfkY5euVO0c7AAAAAElFTkSuQmCC"
-        document.querySelector('.main-nav-list').className += " nav-open";
+        headerEl.classList.toggle("nav-open");
     }else{
         image.src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII="
     }
     console.log(document);
 });
+
+///////////////////////////////////////////////////////////
+// Smooth scrolling animation
+
+const allLinks = document.querySelectorAll("a:link");
+
+allLinks.forEach(function (link) {
+  link.addEventListener("click", function (e) {
+    e.preventDefault();
+    const href = link.getAttribute("href");
+
+    // Scroll back to top
+    if (href === "#")
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+    // Scroll to other links
+    if (href !== "#" && href.startsWith("#")) {
+      const sectionEl = document.querySelector(href);
+      sectionEl.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Close mobile naviagtion
+    if (link.classList.contains("main-nav-link"))
+      headerEl.classList.toggle("nav-open");
+  });
+});
+
+///////////////////////////////////////////////////////////
+// Sticky navigation
+
+const sectionHomeEl = document.querySelector(".section-home");
+
+const obs = new IntersectionObserver(
+  function (entries) {
+    const ent = entries[0];
+    console.log(ent);
+
+    if (ent.isIntersecting === false) {
+      document.body.classList.add("sticky");
+    }
+
+    if (ent.isIntersecting === true) {
+      document.body.classList.remove("sticky");
+    }
+  },
+  {
+    // In the viewport
+    root: null,
+    threshold: 0,
+    rootMargin: "-80px",
+  }
+);
+obs.observe(sectionHomeEl);
