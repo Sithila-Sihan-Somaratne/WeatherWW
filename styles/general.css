@@ -22,3 +22,7 @@ input,select{
 input{
     color: #333333;
 }
+/*Only for responsive design*/
+.break,#brk{
+    display: none;
+}
