@@ -126,22 +126,26 @@ if(SignUpBtn){
                 return alert ("Password must have a minimum of 6 characters and a maximum of 12.")
             }else{
                 let phrase = ckeckPwd(pwd);
-                if (phrase === "Your password is strong enough. You don't need to insert another thing.") {
+                let bool = phrase === "Your password is strong enough. You don't need to insert another thing.";
+                if (bool) {
+                    console.log("Hi!");
                     user.name = txtName;
                     user.email = txtEmail;
                     user.password = pwd;
                     for (let index = 0; index < userArray.length; index++) {
+                        console.log(index);
                         if(index!=0){
-                            if(user === userArray[index]){
-                                return alert("There is already an user with the details you entered.")
-                            }else{
-                                console.log(user);
-                                userArray.push(user);
-                                userArray.length === userArray.length++;
-                                console.log(userArray);
-                            }
-                        }  
+                            console.log(user);
+                            userArray.push(user[index]);
+                            console.log(userArray);
+                        }else{
+                            console.log(user[index]);
+                            userArray.push(user[index]);
+                            console.log(userArray);
+                        }
                     }
+                    userArray.length++;
+                    console.log(userArray);
                 }
             }
         } else {
@@ -202,22 +206,24 @@ allLinks.forEach(function (link) {
 
 const sectionHomeEl = document.querySelector(".section-home");
 
-const obs = new IntersectionObserver(
-  function (entries) {
-    const ent = entries[0];
-    if (ent.isIntersecting === false) {
-      document.body.classList.add("sticky");
-    }
-
-    if (ent.isIntersecting === true) {
-      document.body.classList.remove("sticky");
-    }
-  },
-  {
-    // In the viewport
-    root: null,
-    threshold: 0,
-    rootMargin: "-80px",
-  }
-);
-obs.observe(sectionHomeEl);
+document.addEventListener("DOMContentLoaded", () =>{
+    const obs = new IntersectionObserver(
+        (entries) => {
+          const ent = entries[0];
+          if (ent.isIntersecting === false) {
+            document.body.classList.add("sticky");
+          }
+      
+          if (ent.isIntersecting === true) {
+            document.body.classList.remove("sticky");
+          }
+        },
+        {
+          // In the viewport
+          root: null,
+          threshold: 0,
+          rootMargin: "-80px",
+        } 
+      );
+      obs.observe(sectionHomeEl);
+});
