@@ -227,3 +227,13 @@ document.addEventListener("DOMContentLoaded", () =>{
       );
       obs.observe(sectionHomeEl);
 });
+const SRC = document.getElementById('dark-light-effect-img').src;
+let change_theme = () =>{
+    console.log("Hi!");
+    let img = document.getElementById('dark-light-effect-img');
+    if(img.src === SRC){
+        img.src = "assets/dark-theme-image-btn.png";
+    }else{
+        img.src = SRC;
+    }
+};
