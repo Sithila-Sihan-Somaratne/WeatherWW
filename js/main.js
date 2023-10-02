@@ -1,3 +1,4 @@
+'use strict'
 const headerEl = document.querySelector(".header");
 ///////////////////////////////////////////////////////////
 //Searching City's Weather Details
@@ -227,13 +228,37 @@ document.addEventListener("DOMContentLoaded", () =>{
       );
       obs.observe(sectionHomeEl);
 });
+/*********Change theme*********/
 const SRC = document.getElementById('dark-light-effect-img').src;
+let section_333 = undefined;
+let advantages_section = undefined;
 let change_theme = () =>{
-    console.log("Hi!");
     let img = document.getElementById('dark-light-effect-img');
     if(img.src === SRC){
         img.src = "assets/dark-theme-image-btn.png";
+        section_333 = document.getElementsByClassName('section_333');
+        advantages_section = document.getElementsByClassName('section-advantages');
+        for (let index = 0; index < section_333.length; index++) {
+            const element = section_333[index];
+            element.style.backgroundColor = "#ddd";
+            element.style.color = "#333";
+        }
+        for (let index = 0; index < advantages_section.length; index++) {
+            const element = advantages_section[index];
+            element.style.backgroundColor = "#bbb";
+            element.style.color = "#444";
+        }
     }else{
         img.src = SRC;
+        for (let index = 0; index < section_333.length; index++) {
+            const element = section_333[index];
+            element.style.backgroundColor = "#333";
+            element.style.color = "#fff";
+        }
+        for (let index = 0; index < advantages_section.length; index++) {
+            const element = advantages_section[index];
+            element.style.backgroundColor = "#444";
+            element.style.color = "#fff";
+        }
     }
 };
