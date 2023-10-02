@@ -86,7 +86,7 @@
     }
 
     .main-nav {
-        background-color: rgb(5, 170, 192);
+        background-color: #0dc6ff;
         -webkit-backdrop-filter: blur(5px);
         backdrop-filter: blur(10px);
         position: absolute;
@@ -95,7 +95,7 @@
         width: 100%;
         height: 100vh;
         transform: translateX(100%);
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         transition: all 0.5s ease-in;
@@ -132,6 +132,14 @@
     }
     .home-text-content-box{
         padding-left: 0%;
+    }
+    .main-nav-list {
+        flex-direction: column;
+        gap: 2.8rem;
+    }
+    .main-nav-link:link,
+    .main-nav-link:visited {
+      font-size: 1rem;
     }
     #btn-try{
         margin-bottom: 0rem;
