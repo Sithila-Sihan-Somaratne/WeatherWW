@@ -246,7 +246,7 @@ let change_theme = () =>{
         }
         for (let index = 0; index < advantages_section.length; index++) {
             const element = advantages_section[index];
-            element.style.backgroundColor = "#bbb";
+            element.style.backgroundColor = "#ccc";
             element.style.color = "#444";
         }
         const user_img_ar = document.getElementsByClassName('testimonial-img');
