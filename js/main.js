@@ -122,35 +122,38 @@ if(SignUpBtn){
         let txtName = document.getElementById('txtNameSignUp').value;
         let txtEmail = document.getElementById('txtEmailSignUp').value;
         let pwd = document.getElementById('txtPwdSignUp').value;
-        if (String(txtEmail).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-            if(pwd.length < 6 || pwd.length > 12){
-                return alert ("Password must have a minimum of 6 characters and a maximum of 12.")
-            }else{
-                let phrase = ckeckPwd(pwd);
-                let bool = phrase === "Your password is strong enough. You don't need to insert another thing.";
-                if (bool) {
-                    console.log("Hi!");
-                    user.name = txtName;
-                    user.email = txtEmail;
-                    user.password = pwd;
-                    for (let index = 0; index < userArray.length; index++) {
-                        console.log(index);
-                        if(index!=0){
-                            console.log(user);
-                            userArray.push(user[index]);
-                            console.log(userArray);
-                        }else{
-                            console.log(user[index]);
-                            userArray.push(user[index]);
-                            console.log(userArray);
+        if (txtName != "") {
+            if (String(txtEmail).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                if(pwd.length < 6 || pwd.length > 12){
+                    return alert ("Password must have a minimum of 6 characters and a maximum of 12.")
+                }else{
+                    let phrase = ckeckPwd(pwd);
+                    let bool = phrase === "Your password is strong enough. You don't need to insert another thing.";
+                    if (bool) {
+                        user.name = txtName;
+                        user.email = txtEmail;
+                        user.password = pwd;
+                        for (let index = 0; index < userArray.length; index++) {
+                            console.log(index);
+                            if(index!=0){
+                                console.log(user);
+                                userArray.push(user[index]);
+                                console.log(userArray);
+                            }else{
+                                console.log(user[index]);
+                                userArray.push(user[index]);
+                                console.log(userArray);
+                            }
                         }
+                        userArray.length++;
+                        console.log(userArray);
                     }
-                    userArray.length++;
-                    console.log(userArray);
                 }
+            } else {
+                return alert("You didn't enter an email or the value you entered is not a valid email");
             }
         } else {
-            return alert("You didn't enter an email");
+            return alert("You didn't enter your name");
         }
     });
 }
@@ -207,45 +210,51 @@ allLinks.forEach(function (link) {
 
 const sectionHomeEl = document.querySelector(".section-home");
 
-document.addEventListener("DOMContentLoaded", () =>{
-    const obs = new IntersectionObserver(
-        (entries) => {
-          const ent = entries[0];
-          if (ent.isIntersecting === false) {
-            document.body.classList.add("sticky");
-          }
-      
-          if (ent.isIntersecting === true) {
-            document.body.classList.remove("sticky");
-          }
-        },
-        {
-          // In the viewport
-          root: null,
-          threshold: 0,
-          rootMargin: "-80px",
-        } 
-      );
-      obs.observe(sectionHomeEl);
-});
+if (sectionHomeEl) {
+    document.addEventListener("DOMContentLoaded", () =>{
+        const obs = new IntersectionObserver(
+            (entries) => {
+              const ent = entries[0];
+              if (ent.isIntersecting === false) {
+                document.body.classList.add("sticky");
+              }
+          
+              if (ent.isIntersecting === true) {
+                document.body.classList.remove("sticky");
+              }
+            },
+            {
+              // In the viewport
+              root: null,
+              threshold: 0,
+              rootMargin: "-80px",
+            } 
+          );
+          obs.observe(sectionHomeEl);
+    });
+}
 /*********Change theme*********/
-const SRC = document.querySelector('#dark-light-effect-img').src;
 let section_333 = undefined;
-let advantages_section = undefined;
+try{
+   var sRc = document.querySelector('#dark-light-effect-img').src
+}catch(error){}
+const SRC = sRc;
+let section_444 = undefined;
 let change_theme = () =>{
+   if (SRC!=null) {
     let img = document.getElementById('dark-light-effect-img');
     if(img.src === SRC){
         /*index.html*/
         img.src = "assets/dark-theme-image-btn.png";
         section_333 = document.getElementsByClassName('section_333');
-        advantages_section = document.getElementsByClassName('section-advantages');
+        section_444 = document.getElementsByClassName('section-444');
         for (let index = 0; index < section_333.length; index++) {
             const element = section_333[index];
             element.style.backgroundColor = "#ddd";
             element.style.color = "#333";
         }
-        for (let index = 0; index < advantages_section.length; index++) {
-            const element = advantages_section[index];
+        for (let index = 0; index < section_444.length; index++) {
+            const element = section_444[index];
             element.style.backgroundColor = "#ccc";
             element.style.color = "#444";
         }
@@ -260,6 +269,8 @@ let change_theme = () =>{
         weather_icon_Ar[0].src = "assets/wind_l.png";
         weather_icon_Ar[1].src = "assets/cloud_l.png";
         weather_icon_Ar[2].src = "assets/rain_l.png";
+        const _see_link_2_ = document.querySelector('#see_link');
+        _see_link_2_.style.color = "#376e0b";
     }else{
         /*index.html*/
         img.src = SRC;
@@ -284,5 +295,8 @@ let change_theme = () =>{
         weather_icon_Ar[0].src = "assets/wind.png";
         weather_icon_Ar[1].src = "assets/cloud.png";
         weather_icon_Ar[2].src = "assets/rain.png";
+        const _see_link_2_ = document.querySelector('#see_link');
+        _see_link_2_.style.color = "#68e503";
     }
+   }
 };

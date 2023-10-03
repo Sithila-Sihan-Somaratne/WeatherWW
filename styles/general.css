@@ -28,3 +28,9 @@ h2{
   text-align: center;
   background-color: #333333;
 }
+.see-link{
+  color: #68e503;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
