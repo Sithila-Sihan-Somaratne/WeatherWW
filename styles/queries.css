@@ -166,8 +166,8 @@
   }
 
   .main-nav-link:link,
-    .main-nav-link:visited {
-    font-size: 1rem;
+  .main-nav-link:visited {
+    font-size: 2rem;
   }
 
   #btn-try{

@@ -235,6 +235,7 @@ let advantages_section = undefined;
 let change_theme = () =>{
     let img = document.getElementById('dark-light-effect-img');
     if(img.src === SRC){
+        /*index.html*/
         img.src = "assets/dark-theme-image-btn.png";
         section_333 = document.getElementsByClassName('section_333');
         advantages_section = document.getElementsByClassName('section-advantages');
@@ -248,7 +249,19 @@ let change_theme = () =>{
             element.style.backgroundColor = "#bbb";
             element.style.color = "#444";
         }
+        const user_img_ar = document.getElementsByClassName('testimonial-img');
+        user_img_ar[0].src = "assets/Anne_A.png";
+        user_img_ar[1].src = "assets/Brian_B.png";
+        user_img_ar[2].src = "assets/Charlotte_C.png";
+        user_img_ar[3].src = "assets/Daniel_D.png";
+        const output_box_text = document.querySelectorAll('.output-box-text');
+        output_box_text[1].style.backgroundColor = "#eee";
+        const weather_icon_Ar = document.getElementsByClassName('weather_icon');
+        weather_icon_Ar[0].src = "assets/wind_l.png";
+        weather_icon_Ar[1].src = "assets/cloud_l.png";
+        weather_icon_Ar[2].src = "assets/rain_l.png";
     }else{
+        /*index.html*/
         img.src = SRC;
         for (let index = 0; index < section_333.length; index++) {
             const element = section_333[index];
@@ -260,5 +273,16 @@ let change_theme = () =>{
             element.style.backgroundColor = "#444";
             element.style.color = "#fff";
         }
+        const user_img_ar = document.getElementsByClassName('testimonial-img');
+        user_img_ar[0].src = "assets/Anne.png";
+        user_img_ar[1].src = "assets/Brian.png";
+        user_img_ar[2].src = "assets/Charlotte.png";
+        user_img_ar[3].src = "assets/Daniel.png";
+        const output_box_text = document.querySelectorAll('.output-box-text'); 
+        output_box_text[1].style.backgroundColor = "#444";
+        const weather_icon_Ar = document.getElementsByClassName('weather_icon');
+        weather_icon_Ar[0].src = "assets/wind.png";
+        weather_icon_Ar[1].src = "assets/cloud.png";
+        weather_icon_Ar[2].src = "assets/rain.png";
     }
 };

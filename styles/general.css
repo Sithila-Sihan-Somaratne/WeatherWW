@@ -24,6 +24,7 @@ h2{
 .break{
   display: none;
 }
-img{
-  border: none;
+.section-about,.section-try,.section-send{
+  text-align: center;
+  background-color: #333333;
 }
