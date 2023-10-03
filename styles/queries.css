@@ -7,6 +7,14 @@
     width: 100%;
   }
 }
+@media (max-width: 1262px){
+  ul.details-list{
+    font-size: 0.8rem;
+  }
+  .details-para{
+    font-size: 0.8rem;
+  }
+}
 
 @media (max-width: 1220px){
   .testimonials {
@@ -63,6 +71,14 @@
 
   body{
     width: 100%;
+  }
+}
+@media (max-width: 1006px) {
+  ul.details-list{
+    font-size: 0.6rem;
+  }
+  .details-para{
+    font-size: 0.75rem;
   }
 }
 

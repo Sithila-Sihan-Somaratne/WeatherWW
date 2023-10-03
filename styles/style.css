@@ -257,16 +257,26 @@ footer{
 
 /***************************/
 
-.features-and-usage-section{
+section.features-and-usage-section{
   background-color: #444444;
+  width: 50%;
+  margin: auto;
+  text-align: center;
 }
 
-.details-list{
-  margin-left: 25rem;
+ul.details-list{
+  display: inline-block;
+  text-align: left;
+  font-size: 1rem
+}
+  
+.details-para{
+  font-size: 1rem;
 }
 
 #back{
-  float: right;
+  display: block;
+  margin: 0 auto;
 }
 
 .back-to-home{

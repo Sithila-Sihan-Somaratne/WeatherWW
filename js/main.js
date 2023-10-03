@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () =>{
       obs.observe(sectionHomeEl);
 });
 /*********Change theme*********/
-const SRC = document.getElementById('dark-light-effect-img').src;
+const SRC = document.querySelector('#dark-light-effect-img').src;
 let section_333 = undefined;
 let advantages_section = undefined;
 let change_theme = () =>{
