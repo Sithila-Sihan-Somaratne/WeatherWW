@@ -1,3 +1,4 @@
+//The below line is used to help to see us the errors that VScode can't except.
 'use strict'
 const headerEl = document.querySelector(".header");
 ///////////////////////////////////////////////////////////
