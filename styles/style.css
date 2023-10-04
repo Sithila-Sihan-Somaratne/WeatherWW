@@ -256,6 +256,17 @@ section.features-and-usage-section{
   width: 50%;
   margin: auto;
   text-align: center;
+  color: #fff;
+}
+
+.section-333{
+  background-color: #ddd;
+  color: #333;
+}
+
+.section-444{
+  background-color: #ccc;
+  color: #444;
 }
 
 ul.details-list{

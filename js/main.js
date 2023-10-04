@@ -234,20 +234,18 @@ if (sectionHomeEl) {
     });
 }
 /*********Change theme*********/
-let section_333 = undefined;
 try{
    var sRc = document.querySelector('#dark-light-effect-img').src
 }catch(error){}
+let section_333 = document.getElementsByClassName('section_333');
+let section_444 = document.getElementsByClassName('section_444');
 const SRC = sRc;
-let section_444 = undefined;
 let change_theme = () =>{
    if (SRC!=null) {
     let img = document.getElementById('dark-light-effect-img');
     if(img.src === SRC){
         /*index.html*/
         img.src = "assets/dark-theme-image-btn.png";
-        section_333 = document.getElementsByClassName('section_333');
-        section_444 = document.getElementsByClassName('section-444');
         for (let index = 0; index < section_333.length; index++) {
             const element = section_333[index];
             element.style.backgroundColor = "#ddd";
@@ -279,8 +277,8 @@ let change_theme = () =>{
             element.style.backgroundColor = "#333";
             element.style.color = "#fff";
         }
-        for (let index = 0; index < advantages_section.length; index++) {
-            const element = advantages_section[index];
+        for (let index = 0; index < section_444.length; index++) {
+            const element = section_444[index];
             element.style.backgroundColor = "#444";
             element.style.color = "#fff";
         }
