@@ -120,6 +120,17 @@
   }
 }
 
+@media (max-width: 969px){
+  .output-box-text-details{
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 5px 10rem;
+    margin-bottom: 0;
+  }
+}
+
+
 @media(min-width: 955px){
   .btn-mobile-nav {
     display: none;
@@ -202,16 +213,6 @@
 
   .section-home{
     text-align: center;
-  }
-}
-
-@media (max-width: 969px){
-  .output-box-text-details{
-    text-align: center;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-gap: 5px 10rem;
-    margin-bottom: 0;
   }
 }
 
