@@ -1,3 +1,14 @@
+@media (max-width: 1400px) {
+  #cityFrame{
+    margin: auto;
+  }
+  .output-box{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(1,1fr);
+  }
+}
 @media (max-width: 1272px){
   .main-nav-list{
     margin-left: 15rem;
@@ -84,17 +95,6 @@
 }
 
 @media (max-width: 985px){
-  .output-box{
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    grid-template-columns: repeat(1,1fr);
-  }
-
-  iframe{
-    margin-left: 0rem;
-  }
-  
 
   #show-map{
     margin-bottom: 1rem;
@@ -127,6 +127,16 @@
     grid-template-columns: repeat(2,1fr);
     grid-gap: 5px 10rem;
     margin-bottom: 0;
+  }
+
+  .break-brk{
+    display: block;
+  }
+
+  .output-box-text-extra{
+    padding-left: 0rem;
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
   }
 }
 
@@ -229,6 +239,11 @@
     margin-left: auto;
     margin-right: auto;
     width: 20rem;
+  }
+
+  #cityFrame{
+    width: 300px;
+    height: 400px;
   }
 }
 

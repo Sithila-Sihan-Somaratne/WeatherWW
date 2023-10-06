@@ -3,64 +3,175 @@
 const headerEl = document.querySelector(".header");
 ///////////////////////////////////////////////////////////
 //Searching City's Weather Details
-let wrongOption = "Please select an option:";
-let btnSearch = document.getElementById('search')
-if(btnSearch){
-    btnSearch.addEventListener("click", () =>{
-        let input = document.getElementById('input-location').value;
-        let option = document.getElementById('select-option').value;
-        let forecast = document.getElementById('input-forecast').value;
-        if(input === ""){
-            return alert("Textfields cannot be empty! Please enter a city");
-        }else if(option === ""){
-            return alert("Invalid option \""+wrongOption+"\"")
-        }else if (option != "forecast" && forecast != "" || option === "forecast" && forecast === "") {
-                return alert("You didn't chose \"Forecast\" before or input is empty. Please switch to \"Forecast\" or clear the last input or input number of days for forecast.")
-        }else if(option === "forecast" && forecast != ""){
-                if(forecast < 1){
-                    return alert("The number of days of forecast cannot be less than 1")
-                }else if(forecast > 10){
-                    return alert("The number of days of forecast cannot be grater than 10")
+$(document).ready(()=>{
+    let wrongOption = "Please select an option:";
+    let current_resp = undefined;
+    let forecast_resp = undefined;
+    let historical_resp = undefined;
+    let Status = undefined;
+    var map = undefined;
+    var marker = undefined;
+    let btnSearch = document.getElementById('search')
+    if(btnSearch){
+        btnSearch.addEventListener("click", () =>{
+            let input = document.getElementById('input-location').value;
+            let option = document.getElementById('select-option').value;
+            let forecast = document.getElementById('input-forecast').value;
+            let history = document.getElementById('input-history').value;
+            var date_regex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+            if(input === ""){
+                return alert("Textfields cannot be empty! Please enter a city");
+            }else if(option === ""){
+                return alert("Invalid option \""+wrongOption+"\"")
+            }else if (option != "forecast" && forecast != "" || option === "forecast" && forecast === "") {
+                    return alert("You didn't chose \"Forecast\" before or input is empty. Please switch to \"Forecast\" or clear the last input or input number of days for forecast.")
+            }else if(option === "forecast" && forecast != ""){
+                    if(forecast < 1){
+                        return alert("The number of days of forecast cannot be less than 1")
+                    }else if(forecast > 3){
+                        return alert("The number of days of forecast cannot be grater than 3")
+                    }
+            }else if (option != "historical" && history != "" || option === "historical" && history === "") {
+                return alert("You didn't chose \"Historical\" before or input is empty. Please switch to \"Historical\" or clear the last input or input number of days for forecast.")
+            }else{
+                if(option === "current"){
+                    try {
+                        $.ajax({
+                            mode: 'cors',
+                            method : "GET",
+                            url: "http://api.weatherapi.com/v1/current.json?key=0082fdf80ca141dea31184121232909&q="+input+"&aqi=yes",
+                            success : (resp) => {
+                                current_resp = resp;
+                                let location_name = document.getElementById('city-name');
+                                if(current_resp.location.region === ""){
+                                    location_name.innerHTML = current_resp.location.name+" ("+current_resp.location.country+")";
+                                }else{
+                                    location_name.innerHTML = current_resp.location.name+", "+current_resp.location.region+" ("+current_resp.location.country+")";
+                                }
+                                document.getElementById('city-weather-txt').innerHTML = current_resp.current.condition.text;
+                                document.getElementById('city-weather').src = current_resp.current.condition.icon;
+                                document.getElementById('celsius').innerHTML = current_resp.current.temp_c+" °C";
+                                document.getElementById('fahrenheit').innerHTML = current_resp.current.temp_f+" °F";
+                                document.getElementById('cloud').innerHTML = current_resp.current.cloud;
+                                document.getElementById('uv').innerHTML = current_resp.current.uv;
+                                document.getElementById('humidity').innerHTML = current_resp.current.humidity;
+                                document.getElementById('kph').innerHTML = current_resp.current.wind_kph+" kph";
+                                document.getElementById('mph').innerHTML = current_resp.current.wind_mph+" mph";
+                                document.getElementById('in').innerHTML = current_resp.current.precip_in+"in";
+                                document.getElementById('mm').innerHTML = current_resp.current.precip_mm+"mm";
+                                if(map === undefined){
+                                    map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 10);
+                                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 100,
+                                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                                        id: 'mapbox.streets'
+                                    }).addTo(map);
+                                    marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
+                                }else{
+                                    map.remove();
+                                    map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 10);
+                                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 100,
+                                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                                        id: 'mapbox.streets'
+                                    }).addTo(map);
+                                    marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
+                                }
+                            },  
+                            error : (error) => { 
+                                alert("Sorry! Location wasn't found");
+                            }
+                        }); 
+                    } catch (error) {}
+                }else if(option === "forecast"){
+                    document.getElementById('celsius').innerHTML = "30.0 °C";
+                    document.getElementById('fahrenheit').innerHTML = "86.0 °C";
+                    document.getElementById('humidity').innerHTML = "75";
+                    document.getElementById('uv').innerHTML = "1.0";
+                    document.getElementById('mph').innerHTML = "8.1 mph";
+                    document.getElementById('kph').innerHTML = "13.0 kph";
+                    document.getElementById('cloud').innerHTML = "50";
+                    document.getElementById('mm').innerHTML = "0.0mm";    
+                    document.getElementById('in').innerHTML = "0.0in";    
+                    document.getElementById('cityFrame').src = "https://www.google.com/maps/place/Panadura,+Sri+Lanka/";
+                }else if(option === "historical"){
+                    if (date_regex.test(history)) {
+                        let historical_date = new Date(history).toISOString().split('T')[0];
+                        const oneDayAgo = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const fourDaysAgo = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const sixDaysAgo =  new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        const sevenDaysAgo =  new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                        let daysAgoArr = new Array();
+                        daysAgoArr.push(oneDayAgo,twoDaysAgo,threeDaysAgo,fourDaysAgo,fiveDaysAgo,sixDaysAgo,sevenDaysAgo);
+                        for (let index = 0; index < daysAgoArr.length; index++) {
+                            if (historical_date === daysAgoArr[index]) {
+                                return getHistoricalWeather(historical_date);
+                            }else if(historical_date != daysAgoArr){
+                                continue;
+                            } else if(index === daysAgoArr){
+                                return alert("The date you entered wasn't a past date or it did last more than seven days.")
+                            }
+                            
+                        }
+                    }else{
+                        return alert("The date isn't corresponding the format.")
+                    }
                 }
-        }else{
-            //The below will be later be changed, after WeatherWW API integration
-        if(option === "current"){
-            document.getElementById('celsius').innerHTML = "30.0 °C";
-            document.getElementById('fahrenheit').innerHTML = "86.0 °C";
-            document.getElementById('humidity').innerHTML = "75";
-            document.getElementById('uv').innerHTML = "1.0";
-            document.getElementById('mph').innerHTML = "8.1 mph";
-            document.getElementById('kph').innerHTML = "13.0 kph";
-            document.getElementById('cloud').innerHTML = "50";
-            document.getElementById('mm').innerHTML = "0.0mm";    
-            document.getElementById('in').innerHTML = "0.0in";    
-            document.getElementById('cityFrame').src = "https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik";
-        }else if(option === "forecast"){
-            document.getElementById('celsius').innerHTML = "30.0 °C";
-            document.getElementById('fahrenheit').innerHTML = "86.0 °C";
-            document.getElementById('humidity').innerHTML = "75";
-            document.getElementById('uv').innerHTML = "1.0";
-            document.getElementById('mph').innerHTML = "8.1 mph";
-            document.getElementById('kph').innerHTML = "13.0 kph";
-            document.getElementById('cloud').innerHTML = "50";
-            document.getElementById('mm').innerHTML = "0.0mm";    
-            document.getElementById('in').innerHTML = "0.0in";    
-            document.getElementById('cityFrame').src = "https://www.google.com/maps/place/Panadura,+Sri+Lanka/";
-        }else if(option === "historical"){
-            document.getElementById('celsius').innerHTML = "30.0 °C";
-            document.getElementById('fahrenheit').innerHTML = "86.0 °C";
-            document.getElementById('humidity').innerHTML = "75";
-            document.getElementById('uv').innerHTML = "1.0";
-            document.getElementById('mph').innerHTML = "8.1 mph";
-            document.getElementById('kph').innerHTML = "13.0 kph";
-            document.getElementById('cloud').innerHTML = "50";
-            document.getElementById('mm').innerHTML = "0.0mm";    
-            document.getElementById('in').innerHTML = "0.0in";    
-            document.getElementById('cityFrame').src = "https://www.google.com/maps/place/Panadura,+Sri+Lanka/@6.7234035,79.9232524,14z/data=!4m6!3m5!1s0x3ae24616c169e7c3:0xd21e80c970651d56!8m2!3d6.7106361!4d79.9074262!16s%2Fm%2F02vrtzb?hl=it&entry=ttu";
-        }
-        }
-    });
-}
+            }
+        });
+    }
+    let getHistoricalWeather = (_historical_date) =>{
+        try {
+            $.get("http://api.weatherapi.com/v1/history.json?key=0082fdf80ca141dea31184121232909&q="+input+"&dt="+_historical_date)
+                .done(()=>{
+                    historical_resp = resp;
+                    let location_name = document.getElementById('city-name');
+                    if(historical_resp.location.region === ""){
+                        location_name.innerHTML = historical_resp.location.name+" ("+historical_resp.location.country+")";
+                    }else{
+                        location_name.innerHTML = historical_resp.location.name+", "+historical_resp.location.region+" ("+historical_resp.location.country+")";
+                    }
+                    document.getElementById('city-weather-txt').innerHTML = historical_resp.current.condition.text;
+                    document.getElementById('city-weather').src = historical_resp.current.condition.icon;
+                    document.getElementById('celsius').innerHTML = historical_resp.current.temp_c+" °C";
+                    document.getElementById('fahrenheit').innerHTML = historical_resp.current.temp_f+" °F";
+                    document.getElementById('cloud').innerHTML = historical_resp.current.cloud;
+                    document.getElementById('uv').innerHTML = historical_resp.current.uv;
+                    document.getElementById('humidity').innerHTML = historical_resp.current.humidity;
+                    document.getElementById('kph').innerHTML = historical_resp.current.wind_kph+" kph";
+                    document.getElementById('mph').innerHTML = historical_resp.current.wind_mph+" mph";
+                    document.getElementById('in').innerHTML = historical_resp.current.precip_in+"in";
+                    document.getElementById('mm').innerHTML = historical_resp.current.precip_mm+"mm";
+                    if(map === undefined){
+                        map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 10);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 100,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+                        marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
+                    }else{
+                        map.remove();
+                        map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 10);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 100,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+                        marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
+                    }
+                })
+                .fail((error)=>{
+                    alert("Sorry! Location not found!")
+                });
+        } catch (error) {}
+    }
+});
 ///////////////////////////////////////////////////////////
 //Getting site's feeback from Send us a feedback Section
 let btnSubmit = document.getElementById('submit');

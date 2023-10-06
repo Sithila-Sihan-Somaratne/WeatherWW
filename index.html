@@ -177,11 +177,12 @@
       <section id="try" class="section-try section_333">
         <br><br>
         <h2>Try WeatherWW</h2><br><br>
+        <p>Try WeatherWW for free. You can now search a place's weather details.</p>
         <p style="text-align: center;"><a  onclick="window.location.href='details.html'; return false;" href="details.html" id="see_link" class="see-link">Click here</a> to learn more, <br class="break"> if you don't know what to input below.</p><br>
         <div class="try-box">
           <div class="try-box-text">
             <div class="try-box-text-content">
-              <br>
+              <br><br>
               <input style="color: #333333;" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
             </div>
             <div class="try-box-text">
@@ -197,14 +198,22 @@
             </div>
             <div id="div_try_box" class="try-box-text">
               <div class="try-box-text-content">
-                <label id="forecast-label" for="input-forecast">Enter a number of days between 1 and 10 <br class="break"> (only if you chose Forecast before)</label><br><br>
+                <label id="forecast-label" for="input-forecast">Enter a number of days between 1 and 3 <br class="break"> (only if you chose Forecast before)</label><br><br>
                 <input style="color: #333333;" id="input-forecast" name="input-forecast" type="text">
               </div>
             </div>
             <div class="try-box-text">
               <div class="try-box-text-content">
+                <br>
+                <label id="history-label" for="input-history">Enter a past date which lasts 7 days in format : YYYY-MM-DD<br class="break"> (only if you chose History before)</label><br><br>
+                <input style="color: #333333;" id="input-history" name="input-history" type="text">
+              </div>
+            </div>
+            <div id="div_try_box" class="try-box-text">
+              <div class="try-box-text-content">
                 <br><br><br>
                 <button id="search" class="btn btn-danger">Search</button>
+              </div>
             </div>
           </div>
         </div>
@@ -212,7 +221,20 @@
       <br><br>
       <div class="output-box">
         <div id="show-map" class="output-box-text">
-          <iframe id="cityFrame" title="City Frame" width="250" height="400" src=""></iframe>
+          <div id="cityFrame"></div><br>
+          <div class="output-box-text-extra">
+            <div class="city-name">
+              <h4 id="city-name"></h4>
+            </div>
+            <br class="break-brk">
+            <div class="weather-text">
+              <h4 id="city-weather-txt"></h4>
+            </div>
+            <br class="break-brk">
+            <div class="weather-icon">
+              <img id="city-weather" src="" alt="">
+            </div>
+          </div>
         </div>
         <div style="background-color: #444444; height: fit-content;" class="output-box-text">
           <div class="output-box-text-details">

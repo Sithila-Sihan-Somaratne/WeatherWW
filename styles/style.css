@@ -179,16 +179,27 @@ input[type="text"]{
 }
 
 #div_try_box{
-  margin-left: 12rem;
+  margin-left: 14rem;
 }
 
+#cityFrame{
+  margin-left: 15rem;
+  width: 450px;
+  height: 400px;
+}
 .output-box{
   display: grid;
   grid-template-columns: repeat(2,1fr);
 }
 
 .output-box-text{
-  width: calc(100% - 20px)
+  width: calc(100% - 20px)  
+}
+
+.output-box-text-extra{
+  padding-left: 8rem;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
 }
 
 .output-box-text-details{
