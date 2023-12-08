@@ -10,6 +10,7 @@ input,select{
   border: none; 
 }
 input,select,option{
+  background-color: white;
   color: #333333;
 }
 section{
