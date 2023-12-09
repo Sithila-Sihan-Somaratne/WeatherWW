@@ -64,23 +64,18 @@ $(document).ready(() => {
                                 document.getElementById('mph').innerHTML = current_resp.current.wind_mph + " mph";
                                 document.getElementById('in').innerHTML = current_resp.current.precip_in + "in";
                                 document.getElementById('mm').innerHTML = current_resp.current.precip_mm + "mm";
-                                if (map === undefined) {
-                                    map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 13);
-                                    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                        maxZoom: 18,
-                                        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                        id: 'mapbox.streets'
-                                    }).addTo(map);
-                                    marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
-                                } else {
-                                    map.setView([current_resp.location.lat, current_resp.location.lon], 13);
-                                    if (marker) {
-                                        map.removeLayer(marker);
-                                    }
-                                    marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
+                                if (map !== undefined) {
+                                    map.remove();
                                 }
+                                map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 13);
+                                L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                                    maxZoom: 18,
+                                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                                    id: 'mapbox.streets'
+                                }).addTo(map);
+                                marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
                             },
                             error: (error) => {
                                 const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
@@ -158,23 +153,18 @@ $(document).ready(() => {
                                                     document.getElementById('mph').innerHTML = historical_resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
                                                     document.getElementById('in').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_in + "in";
                                                     document.getElementById('mm').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
-                                                    if (map === undefined) {
-                                                        map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 13);
-                                                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                                            maxZoom: 18,
-                                                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                                            id: 'mapbox.streets'
-                                                        }).addTo(map);
-                                                        marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
-                                                    } else {
-                                                        map.setView([historical_resp.location.lat, historical_resp.location.lon], 13);
-                                                        if (marker) {
-                                                            map.removeLayer(marker);
-                                                        }
-                                                        marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
+                                                    if (map !== undefined) {
+                                                        map.remove();
                                                     }
+                                                    map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 13);
+                                                    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                                                        maxZoom: 18,
+                                                        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                                            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                                            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                                                        id: 'mapbox.streets'
+                                                    }).addTo(map);
+                                                    marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
                                                 } else {
                                                     continue;
                                                 }
@@ -251,24 +241,18 @@ let getForecastToday = (today, location, resp_forecast, map) => {
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
                         let marker;
-                        if (map === undefined) {
-                            map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                maxZoom: 18,
-                                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                id: 'mapbox.streets'
-                            }).addTo(map);
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
-                        } else {
-                            map.setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            if (marker) {
-                                map.removeLayer(marker);
-                            }
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
+                        if (map !== undefined) {
+                            map.remove();
                         }
-
+                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
+                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                            maxZoom: 18,
+                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                            id: 'mapbox.streets'
+                        }).addTo(map);
+                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
                     } else {
                         continue;
                     }
@@ -329,25 +313,18 @@ let getForecastTomorrow = (tomorrow, location, resp_forecast, map) => {
                         document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].wind_mph + " mph";
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_mm + "mm";
-                        let marker;
-                        if (map === undefined) {
-                            map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                maxZoom: 18,
-                                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                id: 'mapbox.streets'
-                            }).addTo(map);
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
-                        } else {
-                            map.setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            if (marker) {
-                                map.removeLayer(marker);
-                            }
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
+                        if (map !== undefined) {
+                            map.remove();
                         }
-
+                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
+                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                            maxZoom: 18,
+                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                            id: 'mapbox.streets'
+                        }).addTo(map);
+                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
                     } else {
                         continue;
                     }
@@ -407,23 +384,18 @@ let getForecastDayAfterTomorrow = (DayAfterTomorrow, location, resp_forecast, ma
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_mm + "mm";
                         let marker;
-                        if (map === undefined) {
-                            map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                maxZoom: 18,
-                                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                id: 'mapbox.streets'
-                            }).addTo(map);
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
-                        } else {
-                            map.setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                            if (marker) {
-                                map.removeLayer(marker);
-                            }
-                            marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
+                        if (map !== undefined) {
+                            map.remove();
                         }
+                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
+                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                            maxZoom: 18,
+                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                            id: 'mapbox.streets'
+                        }).addTo(map);
+                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
                     } else {
                         continue;
                     }
