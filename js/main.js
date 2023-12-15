@@ -64,7 +64,8 @@ $(document).ready(() => {
                                 document.getElementById('mph').innerHTML = current_resp.current.wind_mph + " mph";
                                 document.getElementById('in').innerHTML = current_resp.current.precip_in + "in";
                                 document.getElementById('mm').innerHTML = current_resp.current.precip_mm + "mm";
-                                if (map !== undefined) {
+                                if (map != undefined) {
+                                    map.off();
                                     map.remove();
                                 }
                                 map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 13);
@@ -153,7 +154,8 @@ $(document).ready(() => {
                                                     document.getElementById('mph').innerHTML = historical_resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
                                                     document.getElementById('in').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_in + "in";
                                                     document.getElementById('mm').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
-                                                    if (map !== undefined) {
+                                                    if (map != undefined) {
+                                                        map.off();
                                                         map.remove();
                                                     }
                                                     map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 13);
@@ -204,6 +206,7 @@ $(document).ready(() => {
     }
 });
 let getForecastToday = (today, location, resp_forecast, map) => {
+    let marker = undefined;
     try {
         $.ajax({
             mode: 'cors',
@@ -240,10 +243,15 @@ let getForecastToday = (today, location, resp_forecast, map) => {
                         document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
-                        let marker;
-                        if (map !== undefined) {
-                            map.remove();
+                        var showMapDiv = document.getElementById('show-map');
+                        var oldCityFrameDiv = document.getElementById('cityFrame');
+                        if (oldCityFrameDiv) {
+                            showMapDiv.removeChild(oldCityFrameDiv);
                         }
+                        var cityFrameDiv = document.createElement('div');
+                        cityFrameDiv.id = 'cityFrame';
+                        var firstChild = showMapDiv.firstChild;
+                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
                         map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
                         L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
                             maxZoom: 18,
@@ -277,6 +285,7 @@ let getForecastToday = (today, location, resp_forecast, map) => {
 }
  
 let getForecastTomorrow = (tomorrow, location, resp_forecast, map) => {
+    let marker = undefined;
     try {
         $.ajax({
             mode: 'cors',
@@ -313,9 +322,15 @@ let getForecastTomorrow = (tomorrow, location, resp_forecast, map) => {
                         document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].wind_mph + " mph";
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_mm + "mm";
-                        if (map !== undefined) {
-                            map.remove();
+                        var showMapDiv = document.getElementById('show-map');
+                        var oldCityFrameDiv = document.getElementById('cityFrame');
+                        if (oldCityFrameDiv) {
+                            showMapDiv.removeChild(oldCityFrameDiv);
                         }
+                        var cityFrameDiv = document.createElement('div');
+                        cityFrameDiv.id = 'cityFrame';
+                        var firstChild = showMapDiv.firstChild;
+                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
                         map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
                         L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
                             maxZoom: 18,
@@ -348,6 +363,7 @@ let getForecastTomorrow = (tomorrow, location, resp_forecast, map) => {
     }
 }
 let getForecastDayAfterTomorrow = (DayAfterTomorrow, location, resp_forecast, map) => {
+    let marker = undefined;
     try {
         $.ajax({
             mode: 'cors',
@@ -363,6 +379,7 @@ let getForecastDayAfterTomorrow = (DayAfterTomorrow, location, resp_forecast, ma
                 let fullDate = DayAfterTomorrow + " " + hour;
                 let location_name = document.getElementById('city-name');
                 for (let index = 0; index < 24; index++) {
+                    console.log(forecast_resp.location.lat+"-"+forecast_resp.location.lon);
                     console.log(index);
                     let dateANDtime = forecast_resp.forecast.forecastday[2].hour[index].time;
                     console.log(dateANDtime+"-"+fullDate);
@@ -383,10 +400,15 @@ let getForecastDayAfterTomorrow = (DayAfterTomorrow, location, resp_forecast, ma
                         document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].wind_mph + " mph";
                         document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_in + "in";
                         document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_mm + "mm";
-                        let marker;
-                        if (map !== undefined) {
-                            map.remove();
+                        var showMapDiv = document.getElementById('show-map');
+                        var oldCityFrameDiv = document.getElementById('cityFrame');
+                        if (oldCityFrameDiv) {
+                            showMapDiv.removeChild(oldCityFrameDiv);
                         }
+                        var cityFrameDiv = document.createElement('div');
+                        cityFrameDiv.id = 'cityFrame';
+                        var firstChild = showMapDiv.firstChild;
+                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
                         map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
                         L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
                             maxZoom: 18,
