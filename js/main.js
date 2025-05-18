@@ -1,623 +1,367 @@
-//The below line is used to help to see us the errors that VScode can't except.
-'use strict'
-const headerEl = document.querySelector(".header");
-let selectOption = document.querySelector('#select-option');
-let onSelectedOption = () => {
-    let selectedOption = document.getElementById('select-option').value;
-    if (selectedOption === "forecast" || selectedOption === "historical") {
-        document.querySelector("#hour").disabled = false;
+document.addEventListener('DOMContentLoaded', function () {
+  // ===== THEME SWITCHER (with persistence) =====
+  const THEME_KEY = 'weatherww-theme';
+  const DARK = 'dark';
+  const LIGHT = 'light';
 
+  // Use id 'html' if present, or default to <html>
+  const htmlElement = document.getElementById('html') || document.documentElement;
+  const img = document.getElementById('dark-light-effect-img');
+
+  // Swaps asset images and CSS based on theme
+  function swapThemeAssets(theme) {
+    // Testimonials and weather icons (if present)
+    document.querySelectorAll('.testimonial-img').forEach(el => {
+      if (el.dataset[theme]) el.src = el.dataset[theme];
+    });
+    document.querySelectorAll('.weather_icon').forEach(el => {
+      if (el.dataset[theme]) el.src = el.dataset[theme];
+    });
+    // Section backgrounds and output
+    document.querySelectorAll('.section_333').forEach(el => {
+      el.style.backgroundColor = theme === "dark" ? "#333" : "#ddd";
+      el.style.color = theme === "dark" ? "#fff" : "#333";
+    });
+    document.querySelectorAll('.section_444').forEach(el => {
+      el.style.backgroundColor = theme === "dark" ? "#444" : "#ccc";
+      el.style.color = theme === "dark" ? "#fff" : "#444";
+    });
+    document.querySelectorAll('.output-box-text').forEach(el => {
+      el.style.backgroundColor = theme === "dark" ? "#444" : "#eee";
+      el.style.color = theme === "dark" ? "#fff" : "#222";
+    });
+    // See link color
+    const seeLink = document.getElementById('see_link');
+    if (seeLink)
+      seeLink.style.color = theme === "dark" ? "#68e503" : "#376e0b";
+    // Theme button image
+    if (img) {
+      img.src = theme === "dark"
+        ? "assets/light-theme-image-btn.png"
+        : "assets/dark-theme-image-btn.png";
+    }
+    // Body bg/text
+    document.body.classList.remove('bg-dark', 'text-light', 'bg-light', 'text-dark');
+    if (theme === "dark") {
+      document.body.classList.add('bg-dark', 'text-light');
     } else {
-        document.querySelector("#hour").disabled = true;
+      document.body.classList.add('bg-light', 'text-dark');
     }
-}
-///////////////////////////////////////////////////////////
-//Searching City's Weather Details
-$(document).ready(() => {
-    let wrongOption = "Please select an option:";
-    let current_resp = undefined;
-    let forecast_resp = undefined;
-    console.log(forecast_resp);
-    let historical_resp = undefined;
-    var map = undefined;
-    var marker = undefined;
-    console.log(marker);
-    let btnSearch = document.getElementById('search')
-    if (btnSearch) {
-        btnSearch.addEventListener("click", () => {
-            let input = document.getElementById('input-location').value;
-            let option = document.getElementById('select-option').value;
-            let forecast_opt = document.getElementById('select-option-fr').value;
-            let history = document.getElementById('input-history').value;
-            var date_regex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
-            if (input === "") {
-                return alert("Textfields cannot be empty! Please enter a city");
-            } else if (option === "") {
-                return alert("Invalid option \"" + wrongOption + "\"")
-            } else if (option != "forecast" && forecast_opt != "" || option === "forecast" && forecast_opt === "") {
-                return alert("You didn't chose \"Forecast\" before or input is empty. Please switch to \"Forecast\" or clear the last input or input number of days for forecast.")
-            } else if (option != "historical" && history != "" || option === "historical" && history === "") {
-                return alert("You didn't chose \"Historical\" before or input is empty. Please switch to \"Historical\" or clear the last input or input number of days for forecast.")
-            } else {
-                if (option === "current") {
-                    try {
-                        $.ajax({
-                            mode: 'cors',
-                            method: "GET",
-                            url: "http://api.weatherapi.com/v1/current.json?key=0082fdf80ca141dea31184121232909&q=" + input + "&aqi=yes",
-                            success: (resp) => {
-                                current_resp = resp;
-                                let location_name = document.getElementById('city-name');
-                                if (current_resp.location.region === "") {
-                                    location_name.innerHTML = current_resp.location.name + " (" + current_resp.location.country + ")";
-                                } else {
-                                    location_name.innerHTML = current_resp.location.name + ", " + current_resp.location.region + " (" + current_resp.location.country + ")";
-                                }
-                                document.getElementById('city-weather-txt').innerHTML = current_resp.current.condition.text;
-                                document.getElementById('city-weather').src = current_resp.current.condition.icon;
-                                document.getElementById('celsius').innerHTML = current_resp.current.temp_c + " °C";
-                                document.getElementById('fahrenheit').innerHTML = current_resp.current.temp_f + " °F";
-                                document.getElementById('cloud').innerHTML = current_resp.current.cloud;
-                                document.getElementById('uv').innerHTML = current_resp.current.uv;
-                                document.getElementById('humidity').innerHTML = current_resp.current.humidity;
-                                document.getElementById('kph').innerHTML = current_resp.current.wind_kph + " kph";
-                                document.getElementById('mph').innerHTML = current_resp.current.wind_mph + " mph";
-                                document.getElementById('in').innerHTML = current_resp.current.precip_in + "in";
-                                document.getElementById('mm').innerHTML = current_resp.current.precip_mm + "mm";
-                                if (map != undefined) {
-                                    map.off();
-                                    map.remove();
-                                }
-                                map = L.map('cityFrame').setView([current_resp.location.lat, current_resp.location.lon], 13);
-                                L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                    maxZoom: 18,
-                                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                    id: 'mapbox.streets'
-                                }).addTo(map);
-                                marker = L.marker([current_resp.location.lat, current_resp.location.lon]).addTo(map);
-                            },
-                            error: (error) => {
-                                const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
-                                console.log(alertPlaceholder);
-                                const wrapper = document.createElement('div');
-                                wrapper.innerHTML = [
-                                    `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                                    `   <div>Sorry! Location wasn't found. Please try again.</div>`,
-                                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                                    '</div>'
-                                ].join('')
-                                alertPlaceholder.append(wrapper);
-                                console.error(error);
-                            }
-                        });
-                    } catch (error) { }
-                } else if (option === "forecast") {
-                    const today = new Date(Date.now()).toISOString().split('T')[0];
-                    const oneDayAfter = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                    const twoDaysAfter = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                    if (forecast_opt != "") {
-                        if(forecast_opt === "today"){
-                            getForecastToday(today, input, forecast_resp, map);
-                        } else if (forecast_opt === "tomorrow") {
-                            getForecastTomorrow(oneDayAfter, input, forecast_resp, map);
-                        } else if (forecast_opt === "dayAfterTomorrow") {
-                            getForecastDayAfterTomorrow(twoDaysAfter, input, forecast_resp, map);
-                        }
-                    } else {
-                        alert("Option \"" + forecast_opt + "\" is incorrect. Please choose another option");
-                    }
-                } else if (option === "historical") {
-                    if (date_regex.test(history)) {
-                        let historical_date = new Date(history).toISOString().split('T')[0];
-                        const oneDayAgo = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const fourDaysAgo = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const sixDaysAgo = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                        let daysAgoArr = new Array();
-                        daysAgoArr.push(oneDayAgo, twoDaysAgo, threeDaysAgo, fourDaysAgo, fiveDaysAgo, sixDaysAgo, sevenDaysAgo);
-                        for (let index = 0; index < daysAgoArr.length; index++) {
-                            if (historical_date === daysAgoArr[index]) {
-                                try {
-                                    $.ajax({
-                                        mode: 'cors',
-                                        method: "GET",
-                                        url: "http://api.weatherapi.com/v1/history.json?key=0082fdf80ca141dea31184121232909&q=" + input + "&dt=" + historical_date,
-                                        success: (resp) => {
-                                            historical_resp = resp;
-                                            console.log(historical_resp);
-                                            let num = document.getElementById('hour').value;
-                                            let hour = convertToHours(num);
-                                            let fullDate = historical_date + " " + hour;
-                                            let location_name = document.getElementById('city-name');
-                                            console.log(fullDate);
-                                            for (let index = 0; index < 24; index++) {
-                                                let dateANDtime = historical_resp.forecast.forecastday[0].hour[index].time;
-                                                if (dateANDtime == fullDate) {
-                                                    if (historical_resp.location.region === "") {
-                                                        location_name.innerHTML = historical_resp.location.name + " (" + historical_resp.location.country + ")";
-                                                    } else {
-                                                        location_name.innerHTML = historical_resp.location.name + ", " + historical_resp.location.region + " (" + historical_resp.location.country + ")";
-                                                    }
-                                                    document.getElementById('city-weather-txt').innerHTML = historical_resp.forecast.forecastday[0].hour[index].condition.text;
-                                                    document.getElementById('city-weather').src = historical_resp.forecast.forecastday[0].hour[index].condition.icon;
-                                                    document.getElementById('celsius').innerHTML = historical_resp.forecast.forecastday[0].hour[index].temp_c + " °C";
-                                                    document.getElementById('fahrenheit').innerHTML = historical_resp.forecast.forecastday[0].hour[index].temp_f + " °F";
-                                                    document.getElementById('cloud').innerHTML = historical_resp.forecast.forecastday[0].hour[index].cloud;
-                                                    document.getElementById('uv').innerHTML = historical_resp.forecast.forecastday[0].hour[index].uv;
-                                                    document.getElementById('humidity').innerHTML = historical_resp.forecast.forecastday[0].hour[index].humidity;
-                                                    document.getElementById('kph').innerHTML = historical_resp.forecast.forecastday[0].hour[index].wind_kph + " kph";
-                                                    document.getElementById('mph').innerHTML = historical_resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
-                                                    document.getElementById('in').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_in + "in";
-                                                    document.getElementById('mm').innerHTML = historical_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
-                                                    if (map != undefined) {
-                                                        map.off();
-                                                        map.remove();
-                                                    }
-                                                    map = L.map('cityFrame').setView([historical_resp.location.lat, historical_resp.location.lon], 13);
-                                                    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                                                        maxZoom: 18,
-                                                        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                                            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                                            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                                                        id: 'mapbox.streets'
-                                                    }).addTo(map);
-                                                    marker = L.marker([historical_resp.location.lat, historical_resp.location.lon]).addTo(map);
-                                                } else {
-                                                    continue;
-                                                }
+  }
 
-                                            }
-                                        },
-                                        error: (error) => {
-                                            const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
-                                            console.log(alertPlaceholder);
-                                            const wrapper = document.createElement('div');
-                                            wrapper.innerHTML = [
-                                                `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                                                `   <div>Sorry! Location wasn't found. Please try again.</div>`,
-                                                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                                                '</div>'
-                                            ].join('')
-                                            alertPlaceholder.append(wrapper);
-                                            console.error(error);
-                                        }
-                                    });
-                                } catch (error) {
-                                    console.error(error);
-                                }
-                                break;
-                            } else if (historical_date != daysAgoArr) {
-                                continue;
-                            } else if (index === daysAgoArr) {
-                                return alert("The date you entered wasn't a past date or it did last more than seven days.")
-                            }
-                        }
-                    } else {
-                        return alert("The date isn't corresponding the format.")
-                    }
-                }
-            }
-        });
+  // Apply theme to the page
+  function applyTheme(theme) {
+    htmlElement.setAttribute('data-bs-theme', theme);
+    swapThemeAssets(theme);
+  }
+
+  // Set and persist theme
+  function setTheme(theme) {
+    localStorage.setItem(THEME_KEY, theme);
+    applyTheme(theme);
+  }
+
+  // On load: get theme from storage or default
+  function getInitialTheme() {
+    return localStorage.getItem(THEME_KEY) || DARK;
+  }
+
+  // Initialize theme on page load
+  applyTheme(getInitialTheme());
+
+  // Toggle theme and persist
+  function toggleTheme() {
+    let current = htmlElement.getAttribute('data-bs-theme');
+    let theme = current === 'dark' ? 'light' : 'dark';
+    setTheme(theme);
+  }
+
+  const themeBtn = document.getElementById('theme-toggle-btn');
+  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+  // ===== FIELD ENABLING LOGIC =====
+  const selectOption = document.getElementById('select-option');
+  const forecastSelect = document.getElementById('select-option-fr');
+  const historyInput = document.getElementById('input-history');
+  const hourInput = document.getElementById('hour');
+
+  function updateFields() {
+    if (!selectOption) return;
+    const value = selectOption.value;
+    if (forecastSelect) forecastSelect.disabled = value !== 'forecast';
+    if (historyInput) historyInput.disabled = value !== 'historical';
+    if (hourInput) hourInput.disabled = !(value === 'forecast' || value === 'historical');
+    if (forecastSelect && forecastSelect.disabled) forecastSelect.value = "";
+    if (historyInput && historyInput.disabled) historyInput.value = "";
+    if (hourInput && hourInput.disabled) hourInput.value = "";
+  }
+  if (selectOption) selectOption.addEventListener('change', updateFields);
+  updateFields();
+
+  // ===== ALERTS =====
+  function showAlert(message, type = 'info', autoClose = true, ms = 3500) {
+    const alertPlaceholder = document.getElementById('liveAlertPlaceHolder');
+    if (!alertPlaceholder) return;
+    alertPlaceholder.innerHTML = `
+      <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`;
+    if (autoClose) {
+      setTimeout(() => {
+        const alert = bootstrap.Alert.getOrCreateInstance(alertPlaceholder.querySelector('.alert'));
+        alert.close();
+      }, ms);
     }
-});
-let getForecastToday = (today, location, resp_forecast, map) => {
-    let marker = undefined;
-    try {
-        $.ajax({
+  }
+
+  // ===== FEEDBACK FORM =====
+  const submitBtn = document.getElementById('submit');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function () {
+      let where = document.getElementById("select-where").value;
+      let like = document.getElementById("YesOrNo").value;
+      if (where === "" || like === "") {
+        showAlert("Invalid option. Please select an option in both fields.", "warning");
+      } else {
+        showAlert("Thank you for giving us feedback!", "success");
+      }
+    });
+  }
+
+  // ===== WEATHER SEARCH LOGIC =====
+  let map, marker;
+  let btnSearch = document.getElementById('search');
+  if (btnSearch) {
+    btnSearch.addEventListener("click", function () {
+      let input = document.getElementById('input-location').value;
+      let option = document.getElementById('select-option').value;
+      let forecast_opt = document.getElementById('select-option-fr').value;
+      let history = document.getElementById('input-history').value;
+      let hour = document.getElementById('hour').value;
+      var date_regex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+      if (input === "") {
+        return showAlert("Textfields cannot be empty! Please enter a city", "danger");
+      } else if (option === "") {
+        return showAlert("Invalid option. Please select an option.", "warning");
+      } else if (option !== "forecast" && forecast_opt !== "" || option === "forecast" && forecast_opt === "") {
+        return showAlert("You didn't choose \"Forecast\" before or forecast input is empty. Please switch to \"Forecast\" or clear the last input.", "warning");
+      } else if (option !== "historical" && history !== "" || option === "historical" && history === "") {
+        return showAlert("You didn't choose \"Historical\" before or history date is empty. Please switch to \"Historical\" or clear the last input.", "warning");
+      } else if ((option === "forecast" || option === "historical") && hour === "") {
+        return showAlert("Please select an hour for forecast/historical search.", "warning");
+      } else {
+        // ---- CURRENT ----
+        if (option === "current") {
+          $.ajax({
             mode: 'cors',
             method: "GET",
-            url: "http://api.weatherapi.com/v1/forecast.json?key=0082fdf80ca141dea31184121232909&q=" + location + "&days=3&aqi=yes&alerts=yes",
+            url: "http://api.weatherapi.com/v1/current.json?key=0082fdf80ca141dea31184121232909&q=" + input + "&aqi=yes",
             success: (resp) => {
-                console.log(today);
-                resp_forecast = resp;
-                let forecast_resp = resp_forecast;
-                console.log(resp_forecast);
-                let num = document.getElementById('hour').value;
-                let hour = convertToHours(num);
-                let fullDate = today + " " + hour;
-                let location_name = document.getElementById('city-name');
-                for (let index = 0; index < 24; index++) {
-                    console.log(index);
-                    let dateANDtime = forecast_resp.forecast.forecastday[0].hour[index].time;
-                    console.log(dateANDtime+"==="+fullDate);
-                    console.log(dateANDtime === fullDate);
-                    if (dateANDtime === fullDate) {
-                        if (forecast_resp.location.region === "") {
-                            location_name.innerHTML = forecast_resp.location.name + " (" + forecast_resp.location.country + ")";
-                        } else {
-                            location_name.innerHTML = forecast_resp.location.name + ", " + forecast_resp.location.region + " (" + forecast_resp.location.country + ")";
-                        }
-                        document.getElementById('city-weather-txt').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].condition.text;
-                        document.getElementById('city-weather').src = forecast_resp.forecast.forecastday[0].hour[index].condition.icon;
-                        document.getElementById('celsius').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].temp_c + " °C";
-                        document.getElementById('fahrenheit').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].temp_f + " °F";
-                        document.getElementById('cloud').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].cloud;
-                        document.getElementById('uv').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].uv;
-                        document.getElementById('humidity').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].humidity;
-                        document.getElementById('kph').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].wind_kph + " kph";
-                        document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
-                        document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_in + "in";
-                        document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[0].hour[index].precip_mm + "mm";
-                        var showMapDiv = document.getElementById('show-map');
-                        var oldCityFrameDiv = document.getElementById('cityFrame');
-                        if (oldCityFrameDiv) {
-                            showMapDiv.removeChild(oldCityFrameDiv);
-                        }
-                        var cityFrameDiv = document.createElement('div');
-                        cityFrameDiv.id = 'cityFrame';
-                        var firstChild = showMapDiv.firstChild;
-                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
-                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                            maxZoom: 18,
-                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                            id: 'mapbox.streets'
-                        }).addTo(map);
-                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
-                    } else {
-                        continue;
-                    }
-                }
-            }, error: (error) => {
-                const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
-                console.log(alertPlaceholder);
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = [
-                    `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                    `   <div>Sorry! Location wasn't found. Please try again.</div>`,
-                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                    '</div>'
-                ].join('')
-                alertPlaceholder.append(wrapper);
-                console.error(error);
+              let location_name = document.getElementById('city-name');
+              if (resp.location.region === "") {
+                location_name.innerHTML = resp.location.name + " (" + resp.location.country + ")";
+              } else {
+                location_name.innerHTML = resp.location.name + ", " + resp.location.region + " (" + resp.location.country + ")";
+              }
+              document.getElementById('city-weather-txt').innerHTML = resp.current.condition.text;
+              document.getElementById('city-weather').src = resp.current.condition.icon;
+              document.getElementById('celsius').innerHTML = resp.current.temp_c + " °C";
+              document.getElementById('fahrenheit').innerHTML = resp.current.temp_f + " °F";
+              document.getElementById('cloud').innerHTML = resp.current.cloud;
+              document.getElementById('uv').innerHTML = resp.current.uv;
+              document.getElementById('humidity').innerHTML = resp.current.humidity;
+              document.getElementById('kph').innerHTML = resp.current.wind_kph + " kph";
+              document.getElementById('mph').innerHTML = resp.current.wind_mph + " mph";
+              document.getElementById('in').innerHTML = resp.current.precip_in + " in";
+              document.getElementById('mm').innerHTML = resp.current.precip_mm + " mm";
+              // Map
+              if (window.map) {
+                window.map.remove();
+                window.map = null;
+              }
+              window.map = L.map('cityFrame').setView([resp.location.lat, resp.location.lon], 13);
+              L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                maxZoom: 18,
+                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                  '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                  'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                id: 'mapbox.streets'
+              }).addTo(window.map);
+              L.marker([resp.location.lat, resp.location.lon]).addTo(window.map);
+            },
+            error: (error) => {
+              showAlert("Sorry! Location wasn't found. Please try again.", "danger");
+              console.error(error);
             }
-        })
-    }catch (error) {
-        alert("Something happend!");
-    }
-}
- 
-let getForecastTomorrow = (tomorrow, location, resp_forecast, map) => {
-    let marker = undefined;
-    try {
-        $.ajax({
-            mode: 'cors',
-            method: "GET",
-            url: "http://api.weatherapi.com/v1/forecast.json?key=0082fdf80ca141dea31184121232909&q=" + location + "&days=3&aqi=yes&alerts=yes",
-            success: (resp) => {
-                console.log(tomorrow);
-                resp_forecast = resp;
-                let forecast_resp = resp_forecast;
-                console.log(resp_forecast);
-                let num = document.getElementById('hour').value;
-                let hour = convertToHours(num);
-                let fullDate = tomorrow + " " + hour;
-                let location_name = document.getElementById('city-name');
-                for (let index = 0; index < 24; index++) {
-                    console.log(index);
-                    let dateANDtime = forecast_resp.forecast.forecastday[1].hour[index].time;
-                    console.log(dateANDtime+"==="+fullDate);
-                    console.log(dateANDtime === fullDate);
-                    if (dateANDtime === fullDate) {
-                        if (forecast_resp.location.region === "") {
-                            location_name.innerHTML = forecast_resp.location.name + " (" + forecast_resp.location.country + ")";
-                        } else {
-                            location_name.innerHTML = forecast_resp.location.name + ", " + forecast_resp.location.region + " (" + forecast_resp.location.country + ")";
-                        }
-                        document.getElementById('city-weather-txt').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].condition.text;
-                        document.getElementById('city-weather').src = forecast_resp.forecast.forecastday[1].hour[index].condition.icon;
-                        document.getElementById('celsius').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].temp_c + " °C";
-                        document.getElementById('fahrenheit').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].temp_f + " °F";
-                        document.getElementById('cloud').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].cloud;
-                        document.getElementById('uv').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].uv;
-                        document.getElementById('humidity').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].humidity;
-                        document.getElementById('kph').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].wind_kph + " kph";
-                        document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].wind_mph + " mph";
-                        document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_in + "in";
-                        document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[1].hour[index].precip_mm + "mm";
-                        var showMapDiv = document.getElementById('show-map');
-                        var oldCityFrameDiv = document.getElementById('cityFrame');
-                        if (oldCityFrameDiv) {
-                            showMapDiv.removeChild(oldCityFrameDiv);
-                        }
-                        var cityFrameDiv = document.createElement('div');
-                        cityFrameDiv.id = 'cityFrame';
-                        var firstChild = showMapDiv.firstChild;
-                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
-                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                            maxZoom: 18,
-                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                            id: 'mapbox.streets'
-                        }).addTo(map);
-                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
-                    } else {
-                        continue;
-                    }
-                }
-            }, error: (error) => {
-                const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
-                console.log(alertPlaceholder);
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = [
-                    `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                    `   <div>Sorry! Location wasn't found. Please try again.</div>`,
-                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                    '</div>'
-                ].join('')
-                alertPlaceholder.append(wrapper);
-                console.error(error);
+          });
+        }
+        // ---- FORECAST ----
+        else if (option === "forecast") {
+          const today = new Date(Date.now()).toISOString().split('T')[0];
+          const oneDayAfter = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+          const twoDaysAfter = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+          if (forecast_opt === "today") {
+            getForecastDay(0, today, input, hour);
+          } else if (forecast_opt === "tomorrow") {
+            getForecastDay(1, oneDayAfter, input, hour);
+          } else if (forecast_opt === "dayAfterTomorrow") {
+            getForecastDay(2, twoDaysAfter, input, hour);
+          } else {
+            showAlert("Option \"" + forecast_opt + "\" is incorrect. Please choose another option", "warning");
+          }
+        }
+        // ---- HISTORICAL ----
+        else if (option === "historical") {
+          if (date_regex.test(history)) {
+            let historical_date = new Date(history).toISOString().split('T')[0];
+            let num = Number(hour);
+            if (isNaN(num) || num < 0 || num > 23) {
+              return showAlert("Hour must be between 0 and 23.", "warning");
             }
-        })
-    }catch (error) {
-        alert("Something happend!");
-    }
-}
-let getForecastDayAfterTomorrow = (DayAfterTomorrow, location, resp_forecast, map) => {
-    let marker = undefined;
-    try {
-        $.ajax({
-            mode: 'cors',
-            method: "GET",
-            url: "http://api.weatherapi.com/v1/forecast.json?key=0082fdf80ca141dea31184121232909&q=" + location + "&days=3&aqi=yes&alerts=yes",
-            success: (resp) => {
-                console.log(DayAfterTomorrow);
-                resp_forecast = resp;
-                let forecast_resp = resp_forecast;
-                console.log(resp_forecast);
-                let num = document.getElementById('hour').value;
-                let hour = convertToHours(num);
-                let fullDate = DayAfterTomorrow + " " + hour;
+            $.ajax({
+              mode: 'cors',
+              method: "GET",
+              url: "http://api.weatherapi.com/v1/history.json?key=0082fdf80ca141dea31184121232909&q=" + input + "&dt=" + historical_date,
+              success: (resp) => {
+                let fullDate = historical_date + " " + convertToHours(hour);
                 let location_name = document.getElementById('city-name');
+                let found = false;
                 for (let index = 0; index < 24; index++) {
-                    console.log(forecast_resp.location.lat+"-"+forecast_resp.location.lon);
-                    console.log(index);
-                    let dateANDtime = forecast_resp.forecast.forecastday[2].hour[index].time;
-                    console.log(dateANDtime+"-"+fullDate);
-                    if (dateANDtime === fullDate) {
-                        if (forecast_resp.location.region === "") {
-                            location_name.innerHTML = forecast_resp.location.name + " (" + forecast_resp.location.country + ")";
-                        } else {
-                            location_name.innerHTML = forecast_resp.location.name + ", " + forecast_resp.location.region + " (" + forecast_resp.location.country + ")";
-                        }
-                        document.getElementById('city-weather-txt').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].condition.text;
-                        document.getElementById('city-weather').src = forecast_resp.forecast.forecastday[2].hour[index].condition.icon;
-                        document.getElementById('celsius').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].temp_c + " °C";
-                        document.getElementById('fahrenheit').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].temp_f + " °F";
-                        document.getElementById('cloud').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].cloud;
-                        document.getElementById('uv').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].uv;
-                        document.getElementById('humidity').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].humidity;
-                        document.getElementById('kph').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].wind_kph + " kph";
-                        document.getElementById('mph').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].wind_mph + " mph";
-                        document.getElementById('in').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_in + "in";
-                        document.getElementById('mm').innerHTML = forecast_resp.forecast.forecastday[2].hour[index].precip_mm + "mm";
-                        var showMapDiv = document.getElementById('show-map');
-                        var oldCityFrameDiv = document.getElementById('cityFrame');
-                        if (oldCityFrameDiv) {
-                            showMapDiv.removeChild(oldCityFrameDiv);
-                        }
-                        var cityFrameDiv = document.createElement('div');
-                        cityFrameDiv.id = 'cityFrame';
-                        var firstChild = showMapDiv.firstChild;
-                        showMapDiv.insertBefore(cityFrameDiv, firstChild);
-                        map = L.map('cityFrame').setView([forecast_resp.location.lat, forecast_resp.location.lon], 13);
-                        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
-                            maxZoom: 18,
-                            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                            id: 'mapbox.streets'
-                        }).addTo(map);
-                        marker = L.marker([forecast_resp.location.lat, forecast_resp.location.lon]).addTo(map);
+                  let dateANDtime = resp.forecast.forecastday[0].hour[index].time;
+                  if (dateANDtime == fullDate) {
+                    found = true;
+                    if (resp.location.region === "") {
+                      location_name.innerHTML = resp.location.name + " (" + resp.location.country + ")";
                     } else {
-                        continue;
+                      location_name.innerHTML = resp.location.name + ", " + resp.location.region + " (" + resp.location.country + ")";
                     }
+                    document.getElementById('city-weather-txt').innerHTML = resp.forecast.forecastday[0].hour[index].condition.text;
+                    document.getElementById('city-weather').src = resp.forecast.forecastday[0].hour[index].condition.icon;
+                    document.getElementById('celsius').innerHTML = resp.forecast.forecastday[0].hour[index].temp_c + " °C";
+                    document.getElementById('fahrenheit').innerHTML = resp.forecast.forecastday[0].hour[index].temp_f + " °F";
+                    document.getElementById('cloud').innerHTML = resp.forecast.forecastday[0].hour[index].cloud;
+                    document.getElementById('uv').innerHTML = resp.forecast.forecastday[0].hour[index].uv;
+                    document.getElementById('humidity').innerHTML = resp.forecast.forecastday[0].hour[index].humidity;
+                    document.getElementById('kph').innerHTML = resp.forecast.forecastday[0].hour[index].wind_kph + " kph";
+                    document.getElementById('mph').innerHTML = resp.forecast.forecastday[0].hour[index].wind_mph + " mph";
+                    document.getElementById('in').innerHTML = resp.forecast.forecastday[0].hour[index].precip_in + " in";
+                    document.getElementById('mm').innerHTML = resp.forecast.forecastday[0].hour[index].precip_mm + " mm";
+                    if (window.map) {
+                      window.map.remove();
+                      window.map = null;
+                    }
+                    window.map = L.map('cityFrame').setView([resp.location.lat, resp.location.lon], 13);
+                    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+                      maxZoom: 18,
+                      attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                      id: 'mapbox.streets'
+                    }).addTo(window.map);
+                    L.marker([resp.location.lat, resp.location.lon]).addTo(window.map);
+                    break;
+                  }
                 }
-            }, error: (error) => {
-                const alertPlaceholder = document.querySelector('#liveAlertPlaceHolder');
-                console.log(alertPlaceholder);
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = [
-                    `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                    `   <div>Sorry! Location wasn't found. Please try again.</div>`,
-                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                    '</div>'
-                ].join('')
-                alertPlaceholder.append(wrapper);
+                if (!found) {
+                  showAlert("No weather data found for the selected hour on this date.", "warning");
+                }
+              },
+              error: (error) => {
+                showAlert("Sorry! Location or date wasn't found. Please try again.", "danger");
                 console.error(error);
+              }
+            });
+          } else {
+            showAlert("The date isn't in the correct format (YYYY-MM-DD).", "warning");
+          }
+        }
+      }
+    });
+  }
+
+  function getForecastDay(dayIndex, dateStr, location, hour) {
+    $.ajax({
+      mode: 'cors',
+      method: "GET",
+      url: "http://api.weatherapi.com/v1/forecast.json?key=0082fdf80ca141dea31184121232909&q=" + location + "&days=3&aqi=yes&alerts=yes",
+      success: (resp) => {
+        let num = Number(hour);
+        if (isNaN(num) || num < 0 || num > 23) {
+          showAlert("Hour must be between 0 and 23.", "warning");
+          return;
+        }
+        let fullDate = dateStr + " " + convertToHours(hour);
+        let location_name = document.getElementById('city-name');
+        let found = false;
+        for (let index = 0; index < 24; index++) {
+          let dateANDtime = resp.forecast.forecastday[dayIndex].hour[index].time;
+          if (dateANDtime === fullDate) {
+            found = true;
+            if (resp.location.region === "") {
+              location_name.innerHTML = resp.location.name + " (" + resp.location.country + ")";
+            } else {
+              location_name.innerHTML = resp.location.name + ", " + resp.location.region + " (" + resp.location.country + ")";
             }
-        })
-    }catch (error) {
-        alert("Something happend!");
-    }
-}
-///////////////////////////////////////////////////////////
-//Convert input number to hour
-function convertToHours(num) {
+            document.getElementById('city-weather-txt').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].condition.text;
+            document.getElementById('city-weather').src = resp.forecast.forecastday[dayIndex].hour[index].condition.icon;
+            document.getElementById('celsius').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].temp_c + " °C";
+            document.getElementById('fahrenheit').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].temp_f + " °F";
+            document.getElementById('cloud').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].cloud;
+            document.getElementById('uv').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].uv;
+            document.getElementById('humidity').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].humidity;
+            document.getElementById('kph').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].wind_kph + " kph";
+            document.getElementById('mph').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].wind_mph + " mph";
+            document.getElementById('in').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].precip_in + " in";
+            document.getElementById('mm').innerHTML = resp.forecast.forecastday[dayIndex].hour[index].precip_mm + " mm";
+            if (window.map) {
+              window.map.remove();
+              window.map = null;
+            }
+            window.map = L.map('cityFrame').setView([resp.location.lat, resp.location.lon], 13);
+            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=egoOdaRfQOWYBdPp56xc', {
+              maxZoom: 18,
+              attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+              id: 'mapbox.streets'
+            }).addTo(window.map);
+            L.marker([resp.location.lat, resp.location.lon]).addTo(window.map);
+            break;
+          }
+        }
+        if (!found) {
+          showAlert("No forecast data found for the selected hour.", "warning");
+        }
+      },
+      error: (error) => {
+        showAlert("Sorry! Location wasn't found. Please try again.", "danger");
+        console.error(error);
+      }
+    });
+  }
+
+  function convertToHours(num) {
     var hours = Math.floor(num);
     var minutes = "00";
     if (hours < 10) {
-        return "0" + hours + ":" + minutes;
+      return "0" + hours + ":" + minutes;
     }
     return hours + ":" + minutes;
-}
+  }
 
-///////////////////////////////////////////////////////////
-//Getting site's feeback from Send us a feedback Section
-let btnSubmit = document.getElementById('submit');
-if (btnSubmit) {
-    btnSubmit.addEventListener("click", () => {
-        let selectItem1 = document.getElementById("select-where");
-        let selectedItem1 = selectItem1.value;
-        let selectItem2 = document.getElementById("YesOrNo");
-        let selectedItem2 = selectItem2.value;
-        if (selectedItem1 == "" || selectedItem2 == "") {
-            alert("Invalid option \"" + wrongOption + "\"")
-        } else {
-            alert("Thank you for giving us a feedback!")
+  // ===== SMOOTH SCROLL =====
+  document.querySelectorAll("a[href^='#']").forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = link.getAttribute('href');
+      if (href.length > 1) {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: "smooth" });
         }
+      }
     });
-}
-///////////////////////////////////////////////////////////
-// Make mobile navigation work
-
-const btnMobile = document.querySelector('.btn-mobile-nav');
-if (btnMobile) {
-    btnMobile.addEventListener("click", () => {
-        let image = document.getElementById('mobile-nav');
-        if (image.src === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII=") {
-            image.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBCGYU/RSq9Yj1uwPc1bRBcirWicv4T5Vm6UeVCTGdJ1mUwm00yAJ9AHqKOfaim9eWDO6IlhRkw1TBlKHnADXssDPsBDpdL9Gu6rGt7FNXhikEJ4YpBGeGDQQlhi0EZYYMwQmhhzhAbGDSGJcUdIYMIgrmDCIUowYRFnMOERRzDVIPYw1SH+zBDj5tp9ULvyZup6E+tsPiezEUA0TXxa/PixI4zNp7K3OlWD4cASGx7DiX0iLIaCzS4chgs7dhgMAm2HOwbB3skNg0IDaI5BsYs1w2DQiqONsZwn0MJ4DEVIYzwnO6QwEcZTJDDNHL01cxiayWQyXcR8AfkY5euVO0c7AAAAAElFTkSuQmCC"
-        } else {
-            image.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII="
-        }
-        headerEl.classList.toggle("nav-open");
-    });
-}
-///////////////////////////////////////////////////////////
-// Smooth scrolling animation
-
-const allLinks = document.querySelectorAll("a:link");
-
-allLinks.forEach(function (link) {
-    link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const href = link.getAttribute("href");
-
-        // Scroll back to top
-        if (href === "#")
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
-
-        // Scroll to other links
-        if (href !== "#" && href.startsWith("#")) {
-            const sectionEl = document.querySelector(href);
-            sectionEl.scrollIntoView({ behavior: "smooth" });
-            let image = document.getElementById('mobile-nav');
-            if(window.getComputedStyle(image).display !== "none"){
-                image.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII=";
-            }else{
-                image.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBCGYU/RSq9Yj1uwPc1bRBcirWicv4T5Vm6UeVCTGdJ1mUwm00yAJ9AHqKOfaim9eWDO6IlhRkw1TBlKHnADXssDPsBDpdL9Gu6rGt7FNXhikEJ4YpBGeGDQQlhi0EZYYMwQmhhzhAbGDSGJcUdIYMIgrmDCIUowYRFnMOERRzDVIPYw1SH+zBDj5tp9ULvyZup6E+tsPiezEUA0TXxa/PixI4zNp7K3OlWD4cASGx7DiX0iLIaCzS4chgs7dhgMAm2HOwbB3skNg0IDaI5BsYs1w2DQiqONsZwn0MJ4DEVIYzwnO6QwEcZTJDDNHL01cxiayWQyXcR8AfkY5euVO0c7AAAAAElFTkSuQmCC";
-            }
-        }
-
-        // Close mobile naviagtion
-        if (link.classList.contains("main-nav-link"))
-            headerEl.classList.toggle("nav-open");
-    });
+  });
 });
-
-
-///////////////////////////////////////////////////////////
-// Sticky navigation
-
-const sectionHomeEl = document.querySelector(".section-home");
-
-if (sectionHomeEl) {
-    document.addEventListener("DOMContentLoaded", () => {
-        const obs = new IntersectionObserver(
-            (entries) => {
-                const ent = entries[0];
-                if (ent.isIntersecting === false) {
-                    document.body.classList.add("sticky");
-                }
-
-                if (ent.isIntersecting === true) {
-                    document.body.classList.remove("sticky");
-                }
-            },
-            {
-                // In the viewport
-                root: null,
-                threshold: 0,
-                rootMargin: "-80px",
-            }
-        );
-        obs.observe(sectionHomeEl);
-    });
-}
-/*********Change theme*********/
-try {
-    var sRc = document.querySelector('#dark-light-effect-img').src
-} catch (error) { }
-let section_333 = document.getElementsByClassName('section_333');
-let section_444 = document.getElementsByClassName('section_444');
-const SRC = sRc;
-let change_theme = () => {
-    // Get the HTML element
-    let htmlElement = document.getElementById('html');
-    // Check the current theme
-    if (htmlElement.getAttribute('data-bs-theme') === 'dark') {
-        // If it's dark, change it to light
-        htmlElement.setAttribute('data-bs-theme', 'light');
-    } else {
-        // If it's not dark, change it to dark
-        htmlElement.setAttribute('data-bs-theme', 'dark');
-    }
-    if (SRC != null) {
-        let img = document.getElementById('dark-light-effect-img');
-        if (img.src === SRC) {
-            /*index.html*/
-            img.src = "assets/dark-theme-image-btn.png";
-            for (let index = 0; index < section_333.length; index++) {
-                const element = section_333[index];
-                element.style.backgroundColor = "#ddd";
-                element.style.color = "#333";
-            }
-            for (let index = 0; index < section_444.length; index++) {
-                const element = section_444[index];
-                element.style.backgroundColor = "#ccc";
-                element.style.color = "#444";
-            }
-            const user_img_ar = document.getElementsByClassName('testimonial-img');
-            user_img_ar[0].src = "assets/Anne_A.png";
-            user_img_ar[1].src = "assets/Brian_B.png";
-            user_img_ar[2].src = "assets/Charlotte_C.png";
-            user_img_ar[3].src = "assets/Daniel_D.png";
-            const output_box_text = document.querySelectorAll('.output-box-text');
-            output_box_text[1].style.backgroundColor = "#eee";
-            const weather_icon_Ar = document.getElementsByClassName('weather_icon');
-            weather_icon_Ar[0].src = "assets/wind_l.png";
-            weather_icon_Ar[1].src = "assets/cloud_l.png";
-            weather_icon_Ar[2].src = "assets/rain_l.png";
-            const _see_link_2_ = document.querySelector('#see_link');
-            _see_link_2_.style.color = "#376e0b";
-        } else {
-            /*index.html*/
-            img.src = SRC;
-            for (let index = 0; index < section_333.length; index++) {
-                const element = section_333[index];
-                element.style.backgroundColor = "#333";
-                element.style.color = "#fff";
-            }
-            for (let index = 0; index < section_444.length; index++) {
-                const element = section_444[index];
-                element.style.backgroundColor = "#444";
-                element.style.color = "#fff";
-            }
-            const user_img_ar = document.getElementsByClassName('testimonial-img');
-            user_img_ar[0].src = "assets/Anne.png";
-            user_img_ar[1].src = "assets/Brian.png";
-            user_img_ar[2].src = "assets/Charlotte.png";
-            user_img_ar[3].src = "assets/Daniel.png";
-            const output_box_text = document.querySelectorAll('.output-box-text');
-            output_box_text[1].style.backgroundColor = "#444";
-            const weather_icon_Ar = document.getElementsByClassName('weather_icon');
-            weather_icon_Ar[0].src = "assets/wind.png";
-            weather_icon_Ar[1].src = "assets/cloud.png";
-            weather_icon_Ar[2].src = "assets/rain.png";
-            const _see_link_2_ = document.querySelector('#see_link');
-            _see_link_2_.style.color = "#68e503";
-        }
-    }
-}

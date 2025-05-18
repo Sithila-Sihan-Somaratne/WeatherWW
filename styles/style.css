@@ -1,308 +1,57 @@
-/*
-    index.html
-*/
+/* Custom overrides and branding for WeatherWW Bootstrap site */
 
-/**********************/
- 
-/*       HEADER       */
-
-/**********************/
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #0dc6ff;
-  /* Because we want header to be sticky later */
-  height: 3rem;
-  padding: 0 4.8rem;
-  position: relative;
+/* General branding */
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
 }
 
-/**********************/
-
-/*   NAVIGATION BAR   */
-
-/**********************/
-
-.main-nav-list{
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 4.8rem;
+.navbar-brand img {
+  filter: drop-shadow(0 0 2px #0dc6ff);
 }
 
-.main-nav-link:link,
-.main-nav-link:visited {
-  color: #ffffff;
-  display: inline-block;
-  text-decoration: none;
-  padding-top: 1.4rem;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.main-nav-link:hover,
-.main-nav-link:active {
-  color: #ffff00;
-}
-
-
-/* STICKY NAVIGATION */
-
-header {
-  position: fixed;
-}
-
-/**********************/
-
-/*    HOME SECTION    */
-
-/**********************/
-
-.section-home{
-  background-color: #ffea00;
-}
-
-.home-content-box{
-  display: flex;
-}
-
-.home-text-content-box{
-  color: #333333;
-  flex: 50%;
-  padding-left: 10%;
-}
-
-.home-image-box{
-  flex: 50%;
-  padding: 50px;
-}
-
-/* STICKY NAVIGATION */
-
-.sticky .header {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  padding-top: 0;
-  padding-bottom: 0;
-  z-index: 999;
-}
-
-/**********************/
-
-/*    ABOUT SECTION   */
-
-/**********************/
-
-.testimonials {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  row-gap: 4.8rem;
-  -moz-column-gap: 8rem;
-  column-gap: 8rem;
-}
-
-.testimonial-img {
-  width: 2.2rem;
-  border-radius: 50%;
-  margin-bottom: 1rem;
-}
-
-.testimonial-text {
-  font-size: 1rem;
-  line-height: 1.8;
-  margin-bottom: 1.1rem;
-}
-
-.testimonial-name {
+footer {
   font-size: 1rem;
 }
 
-/**********************/
-
-/* ADVANTAGES SECTION */
-
-/**********************/
-
-.section-advantages{
-  background-color: #444444;
-}
-
-.advantages-box{
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  justify-items: center;
-  align-items: center;
-}
-
-.advantages-text-box{
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-  background-color: #0000ff;
-  stroke-width: 1px;
-  stroke: #000;
-  border-radius: 20px;
-  width: 270px;
-  height: 255px;
-}
-
-.advantages-text-box-content{
-  text-align: center;
-  color: #ffffff;
-}
-
-/**********************/
-
-/*    TRY SECTION     */
-
-/**********************/
-
-.try-box {
-  padding-left: 7.4rem;
-}
-
-.try-box-text{
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-}
-
-.try-box-text-content{
-  text-align: center;
-}
-
-input[type="text"]{
-  margin-bottom: 2rem;
-}
-
-#div_try_box{
-  margin-left: 14rem;
-}
-
-#cityFrame, #newMap{
-  margin-left: 15rem;
-  width: 450px;
-  height: 400px;
-}
-.output-box{
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-}
-
-.output-box-text{
-  width: calc(100% - 20px)  
-}
-
-.output-box-text-extra{
-  padding-left: 8rem;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-}
-
-.output-box-text-details{
-  text-align: center;
-  margin-top: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  grid-gap: 5px 10rem;
-  margin-bottom: 0;
-}
-
-iframe{
-  margin-left: 2rem;
-}
-
-/*************************************/
-
-/*    SEND US A FEEDBACK SECTION     */
-
-/*************************************/
-
-.send-box{
-  text-align: center;
-  margin: 2rem;
-  border-radius: 20px;
-  height: 20rem;
-  margin: auto;
-  width: 90%;
-  padding: 10px;
-  background-color: #D5D51A;
-}
-
-#submit{
-  float: right;
-}
-
-/*************************************/
-
-/*              FOOTER               */
-
-/*************************************/
-
-footer{
-  background-color: #737373;
-  color: #ffffff;
+/* Card customizations */
+.card-title {
   font-weight: 600;
-  padding: 2rem;
-  text-align: center;
 }
 
-/*
-    details.html
-*/
-
-/***************************/
-
-/*    FEATURES SECTION     */
-
-/***************************/
-
-section.features-and-usage-section{
-  background-color: #444444;
-  width: 50%;
-  margin: auto;
-  text-align: center;
-  color: #fff;
+.card.bg-dark {
+  background: #222 !important;
 }
 
-.section-333{
-  background-color: #ddd;
-  color: #333;
+.btn-warning, .btn-warning:focus {
+  color: #222;
 }
 
-.section-444{
-  background-color: #ccc;
-  color: #444;
-}
-
-ul.details-list{
-  display: inline-block;
-  text-align: left;
-  font-size: 1rem
-}
-
-.details-title{
-  text-align: center; 
-  font-weight: 600; 
-  font-size: 2.2rem;
-}
-  
-.details-para{
-  font-size: 1rem;
-}
-
-#back{
-  display: block;
-  margin: 0 auto;
-}
-
-.back-to-home{
-  text-decoration: none;
+/* Feedback form tweaks */
+#submit {
   font-size: 1.2rem;
-  color: #000;
 }
+
+/* Responsive images */
+.img-fluid, .card-img-top {
+  border-radius: 1rem;
+}
+
+@media (max-width: 767px) {
+  .display-4, .display-5 {
+    font-size: 2rem;
+  }
+}
+
+/* Hide old custom navigation if still present */
+.header, .main-nav, .btn-mobile-nav {
+  display: none !important;
+}
+
+/* Remove old box backgrounds if present */
+.home-content-box, .home-text-content-box, .home-image-box,
+.section-about, .section-advantages, .advantages-box, .try-box,
+.try-box-text, .output-box, .output-box-text, .output-box-text-details {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+} 

@@ -1,327 +1,273 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark" id="html">
+<html lang="en" id="html" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="content-security-policy" content="upgrade-insecure-requests" />
-    <meta name="keyword" content="WeatherWW, WeatherWW--Weather App, Weather Wing Website">
+    <meta name="keywords" content="WeatherWW, Weather App, Weather Wing Website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Get a city's weather details with WeatherWW free! Author: S.S. Somaratne">
-    <title>WeatherWW --- Weather App</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="crossorigin=""/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/queries.css">
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.css" rel="stylesheet" />
+    <title>WeatherWW — Weather App</title>
     <link rel="icon" href="assets/Weather_Icon.webp">
- </head>
- <body>
-    <header class="header">
-      <a id="home_link" href="#home">
-        <img src="assets/home-icon.png" alt="Home">
-      </a>
-      <nav class="main-nav">
-        <ul class="main-nav-list">
-          <li><a href="#about" class="main-nav-link">About</a></li>
-          <li><a href="#advantages" class="main-nav-link">Advantages</a></li>
-          <li><a href="#try" class="main-nav-link">Try</a></li>
-          <li><a href="#send" class="main-nav-link">Send</a></li>
-          <button style="border: none;" onclick="change_theme()"><img id="dark-light-effect-img" style="padding-top: 0.8rem; background-color: #0dc6ff; " src="assets/light-theme-image-btn.png" alt="Dark and Ligth Button Effect"></button>
-        </ul>
-      </nav>
-      <button class="btn-mobile-nav" >
-        <img id="mobile-nav" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAL0lEQVR4nO3BQREAMBADofVvOpXQ/w1QAEDtiHZEAADwtSPaEQEAwNeOaEcEANQDM6arjUtOdLsAAAAASUVORK5CYII=">
-      </button>
-    </header>
-    <section id="home" class="section-home">
-      <br><br><br><br><br><br>
-      <div class="home-content-box">
-        <div class="home-text-content-box">
-          <br><br><br>
-          <h1>WeatherWW</h1>
-          <br><br><br>
-          <p style="color: #333333;">
-            Try out our Weather Wing Website <br>
-            to see all current weather details <br>
-            (including the historical ones) .
-          </p>
-          <br><br>
-          <div class="home-btn-box">
-            <button style="width: 190px;" id="btn-try" class="btn btn-primary"><a href="#try" style="color: white; text-decoration: none;">Try WeatherWW</a></button>
-            <br class="break"><br class="break">
-            <button style="width: 190px;" class="btn btn-success"><a href="#about" style="color: white; text-decoration: none;">See More &DownArrow;</a></button>
-          </div>
-        </div>
-        <br><br><br>
-        <div class="home-image-box">
-          <img class="home-img" src="assets/home-image.jpg" alt="Image Home">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet, Maptiler -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.css" rel="stylesheet" />
+    <!-- Custom styles (optional, minimal for Bootstrap) -->
+    <style>
+      .testimonial-img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+      #cityFrame { width: 100%; height: 300px; min-height: 200px; }
+      .weather_icon { width: 32px; height: 32px; }
+      .section_333 { background: #333; color: #fff; }
+      .section_444 { background: #444; color: #fff; }
+      .output-box-text { background: #444; color: #fff; }
+      [data-bs-theme="light"] .section_333 { background: #ddd !important; color: #333 !important; }
+      [data-bs-theme="light"] .section_444 { background: #ccc !important; color: #444 !important; }
+      [data-bs-theme="light"] .output-box-text { background: #eee !important; color: #222 !important; }
+      .bg-lightmode { background: #fff !important; color: #111 !important; }
+      .bg-darkmode { background: #222 !important; color: #fff !important; }
+    </style>
+  </head>
+  <body class="bg-dark text-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#home">
+          <img src="assets/home-icon.png" alt="Home" width="32" height="32" class="me-2">
+          WeatherWW
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#advantages">Advantages</a></li>
+            <li class="nav-item"><a class="nav-link" href="#try">Try</a></li>
+            <li class="nav-item"><a class="nav-link" href="#send">Send</a></li>
+          </ul>
+          <!-- Theme Switcher Button -->
+          <button class="btn btn-info ms-3" type="button" id="theme-toggle-btn">
+            <img id="dark-light-effect-img" src="assets/light-theme-image-btn.png" alt="Theme" width="24">
+          </button>
         </div>
       </div>
-      <br><br><br><br><br><br>
-      </section>
-      <section id="about" class="section-about section_333">
-        <br><br><br>
-        <h2>About WeatherWW</h2><br><br>
-        <p>
-          <br>
-          WeatherWW stands for <br id="brk">
-          Weather Wing Website <br>
-          that helps people to see <br id="brk">
-          the weather of a <br>
-          city they live,<br id="brk">
-          or they want to explore. <br>
-          <br>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="py-5 section_333">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 text-center text-lg-start my-4">
+            <h1 class="display-4 fw-bold">WeatherWW</h1>
+            <p class="lead">Try out our Weather Wing Website to see all current weather details (including historical ones).</p>
+            <div class="mt-4">
+              <a href="#try" class="btn btn-primary btn-lg me-2 fw-bold">Try WeatherWW</a>
+              <a href="#about" class="btn btn-success btn-lg fw-bold">See More &darr;</a>
+            </div>
+          </div>
+          <div class="col-lg-6 text-center my-4">
+            <img src="assets/home-image.jpg" class="img-fluid rounded shadow" alt="Image Home" style="max-height: 350px;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 section_444">
+      <div class="container">
+        <h2 class="text-center mb-4">About WeatherWW</h2>
+        <p class="text-center mb-5">
+          WeatherWW stands for <strong>Weather Wing Website</strong> that helps people to see the weather of a city they live in, or want to explore.
         </p>
-        <h4>Testimonials</h4>
-        <br><br>
-        <div class="testimonials">
-          <figure class="testimonial">
-            <img
-              class="testimonial-img"
-              alt="Photo of customer David Bacon"
-              src="assets/Anne.png"
-            />
-            <blockquote class="testimonial-text">
-              WeatherWW is the best! <br> 
-              I can now see whether   <br id="brk">
-              the location is sunny,  <br id="brk">
-              rainy, snowy, etc. <br> 
-              It feels truly magical.
-            </blockquote>
-            <p class="testimonial-name">&mdash; Anne Andy</p>
-          </figure>
-
-          <figure class="testimonial">
-            <img
-              class="testimonial-img"
-              alt="Photo of customer Brian Haddon"
-              src="assets/Brian.png"
-            />
-            <blockquote class="testimonial-text">
-              WeatherWW is crazy good! <br> 
-              It has the real city's weather  <br id="brk"> 
-              and its details are true. <br> 
-              It's amazing not to worry <br id="brk">
-              about weather anymore!
-            </blockquote>
-            <p class="testimonial-name">&mdash; Brian Bagley</p>
-          </figure>
-
-          <figure class="testimonial">
-            <img
-              class="testimonial-img"
-              alt="Photo of customer Sam Mace"
-              src="assets/Charlotte.png"
-            />
-            <blockquote class="testimonial-text">
-              WeatherWW has got a lot of features! <br> 
-              I can now see <br id="brk">
-              all the cities' <br id="brk">
-              forecast weather! <br> 
-              I can really trust on it.
-            </blockquote>
-            <p class="testimonial-name">&mdash; Charlotte Cooper</p>
-          </figure>
-
-          <figure class="testimonial">
-            <img
-              class="testimonial-img"
-              alt="Photo of customer Hilda Salton"
-              src="assets/Daniel.png"
-            />
-            <blockquote class="testimonial-text">
-              WeatherWW can show you <br id="brk">
-              some types of <br id="brk">
-              a city's weather. <br>
-              It frees up so much time! <br> 
-              Plus, WeatherWW is free.
-            </blockquote>
-            <p class="testimonial-name">&mdash; Daniel Dale</p>
-          </figure>
-        </div>
-        <br><br>
-      </section>
-      <section id="advantages" class="section-advantages section_444">
-          <br><br>
-          <h2>WeatherWW advantages</h2><br>
-          <div class="advantages-box">
-            <div class="advantages-text-box">
-              <p class="advantages-text-box-content">
-                <br><br>
-                WeatherWW has <br>
-                lot of features <br>
-                to try! <br>
-                <br><br><br>
-                <a onclick="window.location.href='details.html'; return false;" href="details.html" class="see-link">See Link</a>
-              </p>
+        <h4 class="text-center mb-4">Testimonials</h4>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-3">
+            <div class="card h-100 text-center p-3">
+              <img src="assets/Anne.png" data-dark="assets/Anne.png" data-light="assets/Anne_A.png" class="testimonial-img mb-2" alt="Anne Andy">
+              <blockquote class="blockquote mb-0"><p>WeatherWW is my go-to for checking if it's sunny, rainy, or even snowy anywhere. It's so easy and feels almost magical!</p>
+              <footer class="blockquote-footer text-light">Anne Andy</footer></blockquote>
             </div>
-            <div class="advantages-text-box">
-              <p class="advantages-text-box-content">
-                <br><br>
-                WeatherWW will <br>
-                always be updated <br>
-                with real time data. <br>
-                <br><br><br>
-                <img src="assets/clock.gif" alt="Clock Moving Automatically">
-              </p>
-            </div>
-            <div class="advantages-text-box">
-              <p class="advantages-text-box-content">
-                <br><br>
-                Even thought it <br>
-                has got a lot of features, <br>
-                WeatherWW is free <br>
-                <br><br><br>
-                <img src="assets/free icon.png" alt="Free icon">
-              </p>
-            </div>
-            <br>
           </div>
-      </section>
-      <section id="try" class="section-try section_333">
-        <br><br>
-        <h2>Try WeatherWW</h2><br><br>
-        <p>Try WeatherWW free. You can now search a place's weather details.</p>
-        <p style="text-align: center;"><a  onclick="window.location.href='details.html'; return false;" href="details.html" id="see_link" class="see-link">Click here</a> to learn more, <br class="break"> if you don't know what to input below.</p><br>
-        <div class="try-box">
-          <div class="try-box-text">
-            <div class="try-box-text-content">
-              <br><br>
-              <input style="color: #333333;" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
+          <div class="col-md-3">
+            <div class="card h-100 text-center p-3">
+              <img src="assets/Brian.png" data-dark="assets/Brian.png" data-light="assets/Brian_B.png" class="testimonial-img mb-2" alt="Brian Bagley">
+              <blockquote class="blockquote mb-0"><p>WeatherWW is seriously impressive! The weather info is accurate and up-to-date for every city I check. I never have to worry about surprises from the weather again!</p>
+              <footer class="blockquote-footer text-light">Brian Bagley</footer></blockquote>
             </div>
-            <div class="try-box-text">
-              <div class="try-box-text-content">
-                <label for="select-option">Please choose an option: </label><br><br>
-                <select style="color: #333333;" id="select-option" name="select-option" onchange="onSelectedOption()" >
-                  <option value="">Please choose one option:</option>
-                  <option value="current">Current</option>
-                  <option value="forecast">Forecast</option>
-                  <option value="historical">Historical</option>
-                </select>
-              </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 text-center p-3">
+              <img src="assets/Charlotte.png" data-dark="assets/Charlotte.png" data-light="assets/Charlotte_C.png" class="testimonial-img mb-2" alt="Charlotte Cooper">
+              <blockquote class="blockquote mb-0"><p>There are so many great features in WeatherWW! I love being able to see forecasts for any city I want. It's truly reliable and easy to use.</p>
+              <footer class="blockquote-footer text-light">Charlotte Cooper</footer></blockquote>
             </div>
-            <div id="div_try_box" class="try-box-text">
-              <div class="try-box-text-content">
-                <label for="select-option-fr">Please choose an option (only if you chose Forecast before): </label><br><br>
-                <select style="color: #333333;" id="select-option-fr" name="select-option-fr" onchange="onSelectedOption()" >
-                  <option value="">Please choose one option:</option>
-                  <option value="today">Today</option>
-                  <option value="tomorrow">Tomorrow</option>
-                  <option value="dayAfterTomorrow">Day After Tomorrow</option>
-                </select>
-              </div>
-            </div>
-            <div class="try-box-text">
-              <div class="try-box-text-content">
-                <br>
-                <label id="history-label" for="input-history">Enter a past date which lasts 7 days in format : YYYY-MM-DD<br class="break"> (only if you chose History before)</label><br><br>
-                <input style="color: #333333;" id="input-history" name="input-history" type="text">
-              </div>
-            </div>
-            <div id="div_try_box" class="try-box-text">
-              <div class="try-box-text-content">
-                <br>
-                <label id="hour-label" for="hour">Select an hour.</label> <br>
-                <input type="number" name="hour" id="hour" min="0" max="23" disabled>
-              </div>
-            </div>
-            <div class="try-box-text">
-              <div class="try-box-text-content">
-                <br><br><br>
-                <button id="search" class="btn btn-danger">Search</button>
-              </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 text-center p-3">
+              <img src="assets/Daniel.png" data-dark="assets/Daniel.png" data-light="assets/Daniel_D.png" class="testimonial-img mb-2" alt="Daniel Dale">
+              <blockquote class="blockquote mb-0"><p>WeatherWW shows all kinds of weather for any city and saves me so much time. Best of all, it's completely free!.</p>
+              <footer class="blockquote-footer text-light">Daniel Dale</footer></blockquote>
             </div>
           </div>
         </div>
       </div>
-      <br><br>
-      <div id="liveAlertPlaceHolder"></div>
-      <br><br>
-      <div class="output-box">
-        <div id="show-map" class="output-box-text">
-          <div id="cityFrame"></div><br>
-          <div class="output-box-text-extra">
-            <div class="city-name">
-              <h4 id="city-name"></h4>
-            </div>
-            <br class="break-brk">
-            <div class="weather-text">
-              <h4 id="city-weather-txt"></h4>
-            </div>
-            <br class="break-brk">
-            <div class="weather-icon">
-              <img id="city-weather" src="" alt="">
-            </div>
-          </div>
-        </div>
-        <div style="background-color: #444444; height: fit-content;" class="output-box-text">
-          <div class="output-box-text-details">
-            <div class="output-box-text-details-content">
-              <h5>Temperature</h5>  
-              <p id="celsius"><br></p> <!--°C-->
-              <p id="fahrenheit"> <br></p>  <!--°F-->
-            </div>
-            <div class="output-box-text-details-content">
-              <h5>Humidity</h5>  
-              <p id="humidity"><br></p> 
-            </div>
-            <div class="output-box-text-details-content">
-              <h5>UV</h5>  
-              <p id="uv"><br></p> 
-            </div>
-            <div class="output-box-text-details-content">
-              <img src="assets/wind.png" alt="wind-icon" class="weather_icon">
-              <p id="mph"><br></p> 
-              <p id="kph"><br></p>  
-            </div>
-            <div class="output-box-text-details-content">
-              <img src="assets/cloud.png" alt="cloud-icon" class="weather_icon">
-              <p id="cloud"><br></p> 
-            </div>
-            <div class="output-box-text-details-content">
-              <img src="assets/rain.png" alt="prec-icon"  class="weather_icon">
-              <p id="mm"><br></p> 
-              <p id="in"><br></p> 
-            </div>
-          </div>
-        </div>
-      </div>
-      <br><br>
     </section>
-    <section id="send" class="section-send section_333">
-      <div style="color: #333333; " class="send-box">
-        <br>
-        <h2 style="font-weight: 700;">Send us a feedback!</h2>
-        <br><br>
-        <label style="color: #333333;" for="select-where">Where did you here from WeatherWW?</label>
-        <select id="select-where">
-          <option value="">Please choose one option:</option>
-          <option value="Friend&family">Friend and Family</option>
-          <option value="video">Youtube Video</option>
-          <option value="ads">Facebook/Instagram/Twitter ad</option>
-          <option value="other">Other</option>
-        </select>
-        <br><br>
-        <label style="color: #333333;" for="YesOrNo">Did you like it?</label><br>
-        <select id="YesOrNo">
-          <option value="">Please choose one option:</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="do_not_know">I don't know</option>
-        </select>
-        <br><br>
-        <button id="submit" class="btn btn-success">Submit</button>
+
+    <!-- Advantages Section -->
+    <section id="advantages" class="py-5 section_333">
+      <div class="container">
+        <h2 class="text-center mb-4">WeatherWW Advantages</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card h-100 text-center">
+              <div class="card-body">
+                <h5 class="card-title">Feature-Rich</h5>
+                <p class="card-text">WeatherWW has a lot of features to try!</p>
+                <a href="details.html" class="btn btn-outline-info fw-bold">See Link</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 text-center">
+              <div class="card-body">
+                <h5 class="card-title">Always Updated</h5>
+                <p class="card-text">WeatherWW will always be updated with real-time data.</p>
+                <img src="assets/clock.gif" alt="Clock" class="img-fluid" style="max-width:56px;">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 text-center">
+              <div class="card-body">
+                <h5 class="card-title">Completely Free</h5>
+                <p class="card-text">Even though it has a lot of features, WeatherWW is free!</p>
+                <img src="assets/free icon.png" alt="Free" class="img-fluid" style="max-width:56px;">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <br><br>
-      <br id="brk">
     </section>
-    <footer>
-      <p class="footer-text"><span style="color: #d7d714;">Copyright &copy;</span> 2023. <br class="break"> Made and designed by Sithila Sihan Somaratne.</p>
+
+    <!-- Try Section (Weather Search) -->
+    <section id="try" class="py-5 section_444">
+      <div class="container">
+        <h2 class="text-center mb-4">Try WeatherWW</h2>
+        <p class="text-center mb-3">Try WeatherWW free. You can now search a place's weather details.</p>
+        <p class="text-center"><a href="details.html" id="see_link" class="text-info text-decoration-none fw-bold">Click here</a> to learn more, e.g., how to enter a place.</p>
+        <form class="row g-3 justify-content-center">
+          <div class="col-12 col-md-6">
+            <input class="form-control" id="input-location" name="input-location" type="text" placeholder="Enter a city/Postal Code/Latitude & Longitude. See above link.">
+          </div>
+          <div class="col-12 col-md-3">
+            <select class="form-select" id="select-option" name="select-option">
+              <option value="">Choose option</option>
+              <option value="current">Current</option>
+              <option value="forecast">Forecast</option>
+              <option value="historical">Historical</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-3">
+            <select class="form-select" id="select-option-fr" name="select-option-fr" disabled>
+              <option value="">Forecast Option</option>
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="dayAfterTomorrow">Day After Tomorrow</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-3">
+            <input class="form-control" id="input-history" name="input-history" type="text" placeholder="YYYY-MM-DD" disabled>
+          </div>
+          <div class="col-12 col-md-2">
+            <input class="form-control" type="number" name="hour" id="hour" min="0" max="23" placeholder="Hour" disabled>
+          </div>
+          <div class="col-12 text-center mt-3">
+            <button id="search" type="button" class="btn btn-danger btn-lg fw-bold">Search</button>
+          </div>
+        </form>
+        <div id="liveAlertPlaceHolder" class="my-4"></div>
+        <!-- Output -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-6">
+            <div class="card bg-dark text-light mb-4 output-box-text">
+              <div class="card-body">
+                <div id="cityFrame"></div>
+                <h4 id="city-name" class="mt-3"></h4>
+                <h4 id="city-weather-txt"></h4>
+                <img id="city-weather" src="" alt="" class="my-2">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-dark text-light mb-4 output-box-text">
+              <div class="card-body">
+                <h5>Temperature</h5>
+                <p id="celsius"></p>
+                <p id="fahrenheit"></p>
+                <h5>Humidity</h5>
+                <p id="humidity"></p>
+                <h5>UV</h5>
+                <p id="uv"></p>
+                <h5>Wind</h5>
+                <img class="weather_icon" src="assets/wind.png" data-dark="assets/wind.png" data-light="assets/wind_l.png" alt="wind-icon">
+                <span id="mph"></span> <span id="kph"></span>
+                <h5>Cloud</h5>
+                <img class="weather_icon" src="assets/cloud.png" data-dark="assets/cloud.png" data-light="assets/cloud_l.png" alt="cloud-icon">
+                <span id="cloud"></span>
+                <h5>Precipitation</h5>
+                <img class="weather_icon" src="assets/rain.png" data-dark="assets/rain.png" data-light="assets/rain_l.png" alt="prec-icon">
+                <span id="mm"></span> <span id="in"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Send Feedback Section -->
+    <section id="send" class="py-5 section_333">
+      <div class="container">
+        <div class="card mx-auto" style="max-width: 500px;">
+          <div class="card-body">
+            <h2 class="text-center fw-bold mb-4">Send us feedback!</h2>
+            <div class="mb-3">
+              <label for="select-where" class="form-label">Where did you hear about WeatherWW?</label>
+              <select id="select-where" class="form-select">
+                <option value="">Choose option</option>
+                <option value="Friend&family">Friend and Family</option>
+                <option value="video">Youtube Video</option>
+                <option value="ads">Facebook/Instagram/Twitter ad</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="YesOrNo" class="form-label">Did you like it?</label>
+              <select id="YesOrNo" class="form-select">
+                <option value="">Choose option</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="do_not_know">I don't know</option>
+              </select>
+            </div>
+            <button id="submit" class="btn btn-success w-100 fw-bold">Submit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-light text-center py-3 mt-5">
+      <div class="container">
+        <span class="fw-bold text-warning">&copy;</span> 2025. Made and designed by Sithila Sihan Somaratne.
+      </div>
     </footer>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap and JS dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.umd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="js/main.js" defer></script>
-  </body> 
+  </body>
 </html>

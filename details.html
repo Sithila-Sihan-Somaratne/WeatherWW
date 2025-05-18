@@ -1,81 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/queries.css">
-  </head>
-  <body id="dark-light" style="background-color: #333333; color: #ffffff; width: 100%; height: 100%;">
-    <br><br><br>
-    <h1 class="details-title">Weather WW's Features and Usage</h1>
-    <br><br><br>
-    <section id="features" class="features-and-usage-section section-444">
-        <br><br>
-        <h3 class="details-big-header" style="text-align: center;">Features</h3>
-        <br><br>
-        <p class="details-para" style="text-align: center;">WeatherWW has a lot of features. <br> Here are some of them: </p>
-        <br><br>
-        <ul class="details-list">
-            <li>
-                WeatherWW shows the current weather conditions.
-            </li>
-            <li>
-                WeatherWW provides a forecast for upcoming days description <br>
-                including predicted temperatures, weather conditions, and chance of precipitation. <br>
-                The number of days of weather forecast are from 1 to 3.
-            </li>
-            <li>
-                WeatherWW  shows also  the historical weather.<br>
-                (you can only input the date which lasts 7 days). <br>
-                The format of the date is : YYYY-MM-DD.
-            </li>
-        </ul>
-        <br><br>
-        <br><br>
-        <h3 class="details-header" style="text-align: center;">Usage</h3>
-        <br><br>
-        <br><br>
-        <p class="details-para" style="text-align: center;">If you want to search <br> for a city's weather details,<br> in WeatherWW you can enter one of the following: </p>
-        <ul class="details-list">
-            <li>
-                Latitude and Longitude (Decimal degree) e.g: 48.8567,2.3508
-            </li>
-            <li>
-                city name e.g.: Paris
-            </li>
-            <li>
-                US zip e.g.: 10001
-            </li>
-            <li>
-                UK postcode e.g: SW1
-            </li>
-            <li>
-                Canada postal code e.g: G2J
-            </li>
-            <li>
-                metar:<metar code> e.g: metar:EGLL
-            </li>
-            <li>
-                iata:<3 digit airport code> e.g: iata:DXB
-            </li>
-            <li>
-                auto:ip IP lookup e.g: auto:ip
-            </li>
-            <li>
-                IP address (IPv4 and IPv6 supported) e.g: 100.0.0.1
-            </li>
-        </ul>
-        <br><br>
-    </section>
-    <br><br>
-    <button id="back" class="btn btn-warning"><a onclick="window.location.href='index.html'; return false;" href="index.html" class="back-to-home">Back to home</a></button>
-    <br><br>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
-    </body>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <title>Details | WeatherWW</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional: Leaflet and custom styles -->
+  <link rel="stylesheet" href="styles/general.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/queries.css">
+  <style>
+    /* Fixed Theme Toggle Button (top-right) */
+    #theme-toggle-btn.fixed-theme-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    /* Fixed Back Button (bottom-left) */
+    #fixed-back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1050;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    /* Optional: Remove .text-end on the theme button's container for mobile friendliness */
+    .fixed-btn-placeholder {
+      height: 56px; /* Just to avoid content overlap if needed */
+    }
+  </style>
+</head>
+
+<body class="">
+  <!-- Fixed Theme Toggle Button -->
+  <button class="btn btn-info fixed-theme-btn" type="button" id="theme-toggle-btn" aria-label="Toggle theme">
+    <img id="dark-light-effect-img" src="assets/light-theme-image-btn.png" alt="Theme" width="24">
+  </button>
+
+  <!-- Main Content -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+
+        <h1 class="display-5 text-center fw-bold mb-5">WeatherWW's Features and Usage</h1>
+
+        <!-- Features Card -->
+        <div class="card mb-5 shadow">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Features</h3>
+            <p class="card-text text-center">WeatherWW has a lot of features. Here are some of them:</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>Current Weather:</strong> WeatherWW shows the current weather conditions.
+              </li>
+              <li class="list-group-item">
+                <strong>Forecast:</strong> Provides a forecast for upcoming days including predicted temperatures,
+                weather conditions, and chance of precipitation (1&dash;3 days).
+              </li>
+              <li class="list-group-item">
+                <strong>Historical Weather:</strong> Shows the historical weather (enter a date within the last 7 days,
+                format: <span class="font-monospace">YYYY-MM-DD</span>).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Usage Card -->
+        <div class="card mb-5 shadow">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Usage</h3>
+            <p class="card-text text-center">
+              To search for a city's weather details in WeatherWW, you can enter any of the following:
+            </p>
+            <ul class="list-group list-group-flush text-dark mb-3">
+              <li class="list-group-item">
+                <strong>Latitude and Longitude:</strong> <span class="font-monospace">48.8567,2.3508</span>
+              </li>
+              <li class="list-group-item">
+                <strong>City Name:</strong> <span class="font-monospace">Paris</span>
+              </li>
+              <li class="list-group-item">
+                <strong>US ZIP:</strong> <span class="font-monospace">10001</span>
+              </li>
+              <li class="list-group-item">
+                <strong>UK Postcode:</strong> <span class="font-monospace">SW1</span>
+              </li>
+              <li class="list-group-item">
+                <strong>Canada Postal Code:</strong> <span class="font-monospace">G2J</span>
+              </li>
+              <li class="list-group-item">
+                <strong>METAR:</strong> <span class="font-monospace">metar:EGLL</span>
+              </li>
+              <li class="list-group-item">
+                <strong>IATA:</strong> <span class="font-monospace">iata:DXB</span>
+              </li>
+              <li class="list-group-item">
+                <strong>IP Lookup:</strong> <span class="font-monospace">auto:ip</span>
+              </li>
+              <li class="list-group-item">
+                <strong>IP Address:</strong> <span class="font-monospace">100.0.0.1</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Back Button -->
+  <a href="index.html" class="btn btn-warning btn-lg fw-bold" id="fixed-back-btn">
+    Back to Home
+  </a>
+
+  <!-- Bootstrap and JS dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
 </html>
